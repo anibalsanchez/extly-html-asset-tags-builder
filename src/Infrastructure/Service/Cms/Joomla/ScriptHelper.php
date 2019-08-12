@@ -24,6 +24,11 @@ use Joomla\CMS\HTML\HTMLHelper as CMSHTMLHelper;
 
 class ScriptHelper
 {
+    public static function addStyleSheet($url)
+    {
+        return self::addDeferredStyle($url);
+    }
+
     public static function addScript($url, $options = [], $attribs = [])
     {
         return self::addScriptVersion($url, $options, $attribs);
@@ -36,7 +41,7 @@ class ScriptHelper
         }
 
         if (!is_array($attribs)) {
-            $attribs = null;
+            $attribs = [];
         }
 
         return self::addDeferredScript($url, $attribs);
