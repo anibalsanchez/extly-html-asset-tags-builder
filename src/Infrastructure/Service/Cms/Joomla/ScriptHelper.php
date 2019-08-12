@@ -24,6 +24,24 @@ use Joomla\CMS\HTML\HTMLHelper as CMSHTMLHelper;
 
 class ScriptHelper
 {
+    public static function addScript($url, $options = [], $attribs = [])
+    {
+        return self::addScriptVersion($url, $options, $attribs);
+    }
+
+    public static function addScriptVersion($url, $options = [], $attribs = [])
+    {
+        if ((is_string($options)) && ((false === strpos($url, '?')))) {
+            $url = $url.'?'.$options;
+        }
+
+        if (!is_array($attribs)) {
+            $attribs = null;
+        }
+
+        return self::addDeferredScript($url, $attribs);
+    }
+
     public static function addScriptDeclaration($script)
     {
         CMSFactory::getDocument()->addScriptDeclaration($script);
@@ -48,26 +66,27 @@ class ScriptHelper
      * Example: ScriptHelper::addDeferredExtensionScript('lib_xtdir4alg/app/autocomplete.min.js');
      *
      * @param string $extensionScript Param
-     * @param mixed  $options
+     * @param mixed  $attribs         Html Attributes
      */
-    public static function addDeferredExtensionScript($extensionScript, $options = [])
+    public static function addDeferredExtensionScript($extensionScript, $attribs = [])
     {
-        $defaultOptions = [
+        $defaultAttribs = [
             'defer' => true,
         ];
-        $options = array_merge($defaultOptions, $options);
+        $attribs = array_merge($defaultAttribs, $attribs);
+
         $include = CMSHTMLHelper::script(
             $extensionScript,
             [
                 'relative' => true,
                 'pathOnly' => true,
             ],
-            $options
+            $attribs
         );
-        self::addScriptToDocument($include, $options);
+        self::addScriptToDocument($include, $attribs);
 
         // Alternative XT Html Asset Tags Builder
-        $scriptTag = ScriptTag::create($include, $options);
+        $scriptTag = ScriptTag::create($include, $attribs);
         HtmlAssetRepository::getInstance()->push($scriptTag);
     }
 
@@ -77,17 +96,17 @@ class ScriptHelper
      * Example: ScriptHelper::addDeferredScript('https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js');
      *
      * @param string $extensionScriptHref Param
-     * @param mixed  $options
+     * @param mixed  $attribs             Html Attributes
      */
-    public static function addDeferredScript($extensionScriptHref, $options = [])
+    public static function addDeferredScript($extensionScriptHref, $attribs = [])
     {
-        $defaultOptions = ['defer' => true, 'crossorigin' => 'anonymous'];
-        $options = array_merge($defaultOptions, $options);
+        $defaultAttribs = ['defer' => true, 'crossorigin' => 'anonymous'];
+        $attribs = array_merge($defaultAttribs, $attribs);
 
-        CMSFactory::getDocument()->addScript($extensionScriptHref, [], $options);
+        CMSFactory::getDocument()->addScript($extensionScriptHref, [], $attribs);
 
         // Alternative XT Html Asset Tags Builder
-        $scriptTag = ScriptTag::create($extensionScriptHref, $options);
+        $scriptTag = ScriptTag::create($extensionScriptHref, $attribs);
         HtmlAssetRepository::getInstance()->push($scriptTag);
     }
 
@@ -179,7 +198,7 @@ class ScriptHelper
             return true;
         }
 
-        return self::addDeferredExtensionScript($extensionRelativeScript, $options);
+        return self::addDeferredExtensionScript($extensionRelativeScript);
     }
 
     private static function addScriptToDocument($include, $attribs)
