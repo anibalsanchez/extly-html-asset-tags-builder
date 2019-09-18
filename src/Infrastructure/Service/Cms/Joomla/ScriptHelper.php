@@ -36,11 +36,13 @@ class ScriptHelper
 
     public static function addScriptVersion($url, $options = [], $attribs = [])
     {
-        if ((is_string($options)) && ((false === strpos($url, '?')))) {
+        if (\is_string($options) &&
+            false === strpos($url, '?') &&
+            'text/javascript' !== $options) {
             $url = $url.'?'.$options;
         }
 
-        if (!is_array($attribs)) {
+        if (!\is_array($attribs)) {
             $attribs = [];
         }
 
@@ -105,7 +107,7 @@ class ScriptHelper
      */
     public static function addDeferredScript($extensionScriptHref, $attribs = [])
     {
-        $defaultAttribs = ['defer' => true, 'crossorigin' => 'anonymous'];
+        $defaultAttribs = ['defer' => true];
         $attribs = array_merge($defaultAttribs, $attribs);
 
         CMSFactory::getDocument()->addScript($extensionScriptHref, [], $attribs);
