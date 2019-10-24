@@ -23,7 +23,7 @@
     "php": ">=5.6.0",
 
     "studiow/html": "^1.0",
-    "illuminate/support": "^5.4",
+    "illuminate/support": "^5.4|^6.0",
     "anibalsanchez/create-pattern": "^2.0"
   },
   "license": "MIT",
