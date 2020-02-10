@@ -31,6 +31,10 @@ class ScriptHelper
 
     public static function addScript($url, $options = [], $attribs = [])
     {
+        if (!isset($options['version'])) {
+            $options['version'] = 'auto';
+        }
+
         return self::addScriptVersion($url, $options, $attribs);
     }
 
@@ -219,6 +223,10 @@ class ScriptHelper
         // If there is already a version hash in the script reference (by using deprecated MD5SUM).
         if ($pos = false !== strpos($include, '?')) {
             $options['version'] = substr($include, $pos + 1);
+        }
+
+        if (!isset($options['version'])) {
+            $options['version'] = 'auto';
         }
 
         $document->addScript($include, $options, $attribs);
