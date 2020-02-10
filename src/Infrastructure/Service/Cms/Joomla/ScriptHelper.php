@@ -6,7 +6,7 @@
  *                the generation of script and style tags for an Html Document.
  *
  * @author      Extly, CB. <team@extly.com>
- * @copyright   Copyright (c)2007-2019 Extly, CB. All rights reserved.
+ * @copyright   Copyright (c)2012-2020 Extly, CB. All rights reserved.
  * @license     http://www.opensource.org/licenses/mit-license.html  MIT License
  *
  * @see         https://www.extly.com
@@ -110,7 +110,7 @@ class ScriptHelper
         $defaultAttribs = ['defer' => true];
         $attribs = array_merge($defaultAttribs, $attribs);
 
-        CMSFactory::getDocument()->addScript($extensionScriptHref, [], $attribs);
+        CMSFactory::getDocument()->addScript($extensionScriptHref, ['version' => 'auto'], $attribs);
 
         // Alternative XT Html Asset Tags Builder
         $scriptTag = ScriptTag::create($extensionScriptHref, $attribs);
