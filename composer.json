@@ -29,5 +29,12 @@
   "license": "MIT",
   "require-dev": {
     "phpunit/phpunit": "^7.4"
+  },
+  "extra": {
+    "php-prefixer": {
+      "projectName": "PHP-PREFIXER",
+      "prefixForNamespaces": "DIV_BUILD",
+      "prefixForGlobalObjects": "DIV_"
+    }
   }
 }
