@@ -41,11 +41,13 @@ use Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetTag;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\ScriptTag;
 
 // Add template js
-$templateJsFile = CMSHTMLHelper::script('template.js', ['version' => 'auto', 'relative' => true, 'pathOnly' => true]);
+$templateJsFile = CMSHTMLHelper::script('template.js', ['auto', 'relative' => true, 'pathOnly' => true]);
+$templateJsFile = $templateJsFile.'?'.(new JVersion)->getMediaVersion();
 $htmlAssetRepository->push(ScriptTag::create($templateJsFile));
 
 // Add Stylesheets
-$templateCssFile = CMSHTMLHelper::stylesheet('template.css', ['version' => 'auto', 'relative' => true, 'pathOnly' => true]);
+$templateCssFile = CMSHTMLHelper::stylesheet('template.css', ['auto', 'relative' => true, 'pathOnly' => true]);
+$templateCssFile = $templateCssFile.'?'.(new JVersion)->getMediaVersion();
 $htmlAssetRepository->push(LinkCriticalStylesheetTag::create($templateCssFile));
 
 // Additional inline head scripts

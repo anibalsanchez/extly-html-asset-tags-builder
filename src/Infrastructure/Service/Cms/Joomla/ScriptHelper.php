@@ -151,7 +151,7 @@ class ScriptHelper
      */
     public static function addInlineStylesheet($extensionRelativeStylesheet, $options = [])
     {
-        $defaultOptions = ['version' => 'auto', 'relative' => true, 'pathOnly' => true];
+        $defaultOptions = ['relative' => true, 'pathOnly' => true];
         $options = array_merge($defaultOptions, $options);
 
         $uriPath = CMSHTMLHelper::stylesheet($extensionRelativeStylesheet, $options);
@@ -190,7 +190,7 @@ class ScriptHelper
      */
     public static function addInlineScript($extensionRelativeScript, $options = [])
     {
-        $defaultOptions = ['version' => 'auto', 'relative' => true, 'pathOnly' => true];
+        $defaultOptions = ['relative' => true, 'pathOnly' => true];
         $options = array_merge($defaultOptions, $options);
 
         $uriPath = CMSHTMLHelper::script($extensionRelativeScript, $options);
