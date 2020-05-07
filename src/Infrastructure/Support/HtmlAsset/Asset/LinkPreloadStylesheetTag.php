@@ -18,16 +18,17 @@ final class LinkPreloadStylesheetTag extends HtmlAssetTagAbstract implements Htm
 {
     use CreatorTrait;
 
+    const DEFAULT_ATTRIBUTES = [
+        'rel' => 'preload',
+        'as' => 'style',
+        'onload' => 'this.onload=null;this.rel = "stylesheet"',
+    ];
+
     public function __construct(string $href, array $attributes = [])
     {
-        $defaultAttributes = [
-            'rel' => 'preload',
-            'as' => 'style',
-            'onload' => 'this.rel = "stylesheet"',
-        ];
-
         $attributes['href'] = $href;
+        $noScriptTag = LinkCriticalStylesheetTag::create($href);
 
-        parent::__construct('link', '', array_merge($defaultAttributes, $attributes));
+        parent::__construct('link', '', array_merge(self::DEFAULT_ATTRIBUTES, $attributes), $noScriptTag);
     }
 }

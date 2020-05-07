@@ -13,7 +13,6 @@
 namespace Extly\Infrastructure\Support\HtmlAsset\Asset;
 
 use Extly\Infrastructure\Creator\CreatorTrait;
-use Extly\Infrastructure\Support\HtmlAsset\Repository;
 
 final class LinkStylesheetTag extends HtmlAssetTagAbstract implements HtmlAssetTagInterface
 {
@@ -21,14 +20,15 @@ final class LinkStylesheetTag extends HtmlAssetTagAbstract implements HtmlAssetT
 
     public function __construct(string $href, array $attributes = [])
     {
-        $defaultAttributes = [
-            'position' => Repository::GLOBAL_POSITION_BODY,
-        ];
+        $attributes['href'] = $href;
 
-        $script = '!function(e){var t=document.createElement("link");t.rel="stylesheet",t.href="'.
-            $href.
-            '",t.type="text/css";var n=document.getElementsByTagName("link")[0];n.parentNode.insertBefore(t,n)}();';
-
-        parent::__construct('script', $script, array_merge($defaultAttributes, $attributes));
+        parent::__construct(
+            'link',
+            '',
+            array_merge(
+                LinkPreloadStylesheetTag::DEFAULT_ATTRIBUTES,
+                $attributes
+            )
+        );
     }
 }
