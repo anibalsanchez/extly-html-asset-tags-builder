@@ -25,4 +25,6 @@ interface HtmlAssetTagInterface
     public function getInnerHtml(): string;
 
     public function getAttributes(): Collection;
+
+    public function getNoScriptContentTag();
 }

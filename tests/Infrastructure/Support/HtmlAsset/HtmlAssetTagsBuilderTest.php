@@ -16,7 +16,7 @@ use Extly\Infrastructure\Support\HtmlAsset\Asset\InlineScriptTag;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\InlineStyleTag;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\LinkCriticalStylesheetTag;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\LinkPreloadStylesheetTag;
-use Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetTag;
+use Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetByScriptTag;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\ScriptTag;
 use Extly\Infrastructure\Support\HtmlAsset\HtmlAssetTagsBuilder;
 use Extly\Infrastructure\Support\HtmlAsset\Repository;
@@ -115,7 +115,7 @@ class HtmlAssetTagsBuilderTest extends TestCase
 
         $htmlAssetBuilder = HtmlAssetTagsBuilder::create($repository);
         $script = $htmlAssetBuilder->generate(Repository::GLOBAL_POSITION_HEAD);
-        $this->assertSame('<link rel="preload" as="style" onload="this.rel = &quot;stylesheet&quot;" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css">', $script);
+        $this->assertSame('<link rel="preload" as="style" onload="this.onload=null;this.rel = &quot;stylesheet&quot;" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css"><noscript><link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css"></noscript>', $script);
     }
 
     public function testLinkCriticalStylesheetTag()
@@ -131,9 +131,9 @@ class HtmlAssetTagsBuilderTest extends TestCase
         $this->assertSame('<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css">', $script);
     }
 
-    public function testLinkStylesheetTag()
+    public function testLinkStylesheetByScriptTag()
     {
-        $stylesheet = LinkStylesheetTag::create(
+        $stylesheet = LinkStylesheetByScriptTag::create(
             'https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css'
         );
 
@@ -141,7 +141,7 @@ class HtmlAssetTagsBuilderTest extends TestCase
 
         $htmlAssetBuilder = HtmlAssetTagsBuilder::create($repository);
         $script = $htmlAssetBuilder->generate(Repository::GLOBAL_POSITION_HEAD);
-        $this->assertSame('', $script);
+        $this->assertSame('<noscript><link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css"></noscript>', $script);
 
         $script = $htmlAssetBuilder->generate(Repository::GLOBAL_POSITION_BODY);
         $this->assertSame('<script>!function(e){var t=document.createElement("link");t.rel="stylesheet",t.href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css",t.type="text/css";var n=document.getElementsByTagName("link")[0];n.parentNode.insertBefore(t,n)}();</script>', $script);
@@ -195,6 +195,6 @@ class HtmlAssetTagsBuilderTest extends TestCase
 
         $htmlAssetBuilder = HtmlAssetTagsBuilder::create($repository);
         $script = $htmlAssetBuilder->generate(Repository::GLOBAL_POSITION_HEAD);
-        $this->assertSame('<style>body {color: #fff}</style><script>console.log("A Test");</script><link rel="preload" as="style" onload="this.rel = &quot;stylesheet&quot;" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css"><script async src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.4/redux.min.js"></script><style>p {color: #f00}</style>', $script);
+        $this->assertSame('<style>body {color: #fff}</style><script>console.log("A Test");</script><link rel="preload" as="style" onload="this.onload=null;this.rel = &quot;stylesheet&quot;" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css"><script async src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.4/redux.min.js"></script><style>p {color: #f00}</style><noscript><link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css"></noscript>', $script);
     }
 }

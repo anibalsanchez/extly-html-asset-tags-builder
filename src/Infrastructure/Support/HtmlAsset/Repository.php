@@ -51,4 +51,11 @@ final class Repository
                 return $item->getPriority();
             });
     }
+
+    public function getNoScriptContentTags()
+    {
+        return $this->assetCollection->map(function (HtmlAssetTagInterface $item) {
+            return $item->getNoScriptContentTag();
+        })->filter();
+    }
 }

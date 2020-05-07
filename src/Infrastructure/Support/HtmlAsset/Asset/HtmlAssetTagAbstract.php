@@ -23,11 +23,18 @@ class HtmlAssetTagAbstract
 
     protected $attributes;
 
-    protected function __construct(string $tag, string $innerHtml, array $attributes = [])
-    {
+    protected $noScriptContentTag;
+
+    protected function __construct(
+        string $tag,
+        string $innerHtml,
+        array $attributes = [],
+        HtmlAssetTagInterface $noScriptContentTag = null
+    ) {
         $this->tag = $tag;
         $this->innerHtml = $innerHtml;
         $this->attributes = Collection::make($attributes);
+        $this->noScriptContentTag = $noScriptContentTag;
     }
 
     /**
@@ -70,5 +77,10 @@ class HtmlAssetTagAbstract
         }
 
         return $this->attributes->get(Repository::HTML_PRIORITY);
+    }
+
+    public function getNoScriptContentTag()
+    {
+        return $this->noScriptContentTag;
     }
 }

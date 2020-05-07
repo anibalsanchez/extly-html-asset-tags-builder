@@ -14,6 +14,7 @@ namespace Extly\Infrastructure\Support\HtmlAsset;
 
 use Extly\Infrastructure\Creator\CreatorTrait;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\HtmlAssetTagInterface;
+use Illuminate\Support\Collection;
 use Studiow\HTML\Element;
 
 final class HtmlAssetTagsBuilder
@@ -34,9 +35,22 @@ final class HtmlAssetTagsBuilder
 
     public function generate($positionName)
     {
+        $noScriptContentTags = new Collection();
         $assetTags = $this->repository->getAssetTagsByPosition($positionName);
 
-        return $this->build($assetTags);
+        if (Repository::GLOBAL_POSITION_HEAD === $positionName) {
+            $noScriptContentTags = $this->repository->getNoScriptContentTags();
+        }
+
+        $renderedAssetTags = $this->build($assetTags);
+
+        if ($noScriptContentTags->isEmpty()) {
+            return $renderedAssetTags;
+        }
+
+        $renderedNoScriptContentTags = $this->buildNoScriptTags($noScriptContentTags);
+
+        return $renderedAssetTags.$renderedNoScriptContentTags;
     }
 
     private function build($assetTags)
@@ -45,6 +59,17 @@ final class HtmlAssetTagsBuilder
 
         foreach ($assetTags as $assetTag) {
             $buffer[] = $this->buildTag($assetTag);
+        }
+
+        return implode('', $buffer);
+    }
+
+    private function buildNoScriptTags($assetTags)
+    {
+        $buffer = [];
+
+        foreach ($assetTags as $assetTag) {
+            $buffer[] = $this->buildNoScriptTag($assetTag);
         }
 
         return implode('', $buffer);
@@ -59,6 +84,16 @@ final class HtmlAssetTagsBuilder
                 ->forget(Repository::HTML_POSITION)
                 ->forget(Repository::HTML_PRIORITY)
                 ->toArray()
+        ));
+    }
+
+    private function buildNoScriptTag(HtmlAssetTagInterface $noScriptContentTag)
+    {
+        $renderedNoScriptContentTag = $this->buildTag($noScriptContentTag);
+
+        return (string) (new Element(
+            'noscript',
+            $renderedNoScriptContentTag
         ));
     }
 }
