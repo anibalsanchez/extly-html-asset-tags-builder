@@ -2,8 +2,6 @@
 
 /*
  * @package     Extly Infrastructure Support
- *              Beyond the JDocument, the Asset Tags Builder manages
- *                the generation of script and style tags for an Html Document.
  *
  * @author      Extly, CB. <team@extly.com>
  * @copyright   Copyright (c)2012-2020 Extly, CB. All rights reserved.

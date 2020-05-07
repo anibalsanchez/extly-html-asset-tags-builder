@@ -10,7 +10,7 @@
  * @see         https://www.extly.com
  */
 
-namespace Tests\Infrastructure\Support;
+namespace Tests\Infrastructure\Support\HtmlAsset;
 
 use Extly\Infrastructure\Support\HtmlAsset\Asset\InlineScriptTag;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\InlineStyleTag;
