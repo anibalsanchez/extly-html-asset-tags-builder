@@ -19,6 +19,7 @@ use Extly\Infrastructure\Support\HtmlAsset\Asset\ScriptTag;
 use Extly\Infrastructure\Support\HtmlAsset\Repository as HtmlAssetRepository;
 use Joomla\CMS\Factory as CMSFactory;
 use Joomla\CMS\HTML\HTMLHelper as CMSHTMLHelper;
+use Joomla\CMS\Version as CMSVersion;
 
 class ScriptHelper
 {
@@ -83,7 +84,7 @@ class ScriptHelper
         self::addScriptToDocument($uri, $attribs);
 
         // Alternative XT Html Asset Tags Builder
-        $scriptTag = ScriptTag::create($uri, $attribs);
+        $scriptTag = ScriptTag::create(self::addMediaVersion($uri), $attribs);
         HtmlAssetRepository::getInstance()->push($scriptTag);
     }
 
@@ -178,7 +179,7 @@ class ScriptHelper
         CMSFactory::getDocument()->addStyleSheet($uri);
 
         // Alternative XT Html Asset Tags Builder
-        $stylesheetTag = LinkStylesheetTag::create($uri);
+        $stylesheetTag = LinkStylesheetTag::create(self::addMediaVersion($uri));
         HtmlAssetRepository::getInstance()->push($stylesheetTag);
 
         return true;
@@ -250,5 +251,16 @@ class ScriptHelper
         }
 
         $document->addScript($include, $options, $attribs);
+    }
+
+    private static function addMediaVersion($uri)
+    {
+        $mediaversion = (new CMSVersion())->getMediaVersion();
+
+        if (false !== strpos($uri, '?')) {
+            return $uri.'?'.$mediaversion;
+        }
+
+        return $uri.'&'.$mediaversion;
     }
 }
