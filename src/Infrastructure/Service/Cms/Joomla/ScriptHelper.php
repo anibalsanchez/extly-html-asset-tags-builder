@@ -79,23 +79,11 @@ class ScriptHelper
      */
     public static function addDeferredExtensionScript($extensionScript, $attribs = [])
     {
-        $defaultAttribs = [
-            'defer' => true,
-        ];
-        $attribs = array_merge($defaultAttribs, $attribs);
-
-        $include = CMSHTMLHelper::script(
-            $extensionScript,
-            [
-                'relative' => true,
-                'pathOnly' => true,
-            ],
-            $attribs
-        );
-        self::addScriptToDocument($include, $attribs);
+        $uri = self::resolveExtensionScriptUri($extensionScript, $attribs);
+        self::addScriptToDocument($uri, $attribs);
 
         // Alternative XT Html Asset Tags Builder
-        $scriptTag = ScriptTag::create($include, $attribs);
+        $scriptTag = ScriptTag::create($uri, $attribs);
         HtmlAssetRepository::getInstance()->push($scriptTag);
     }
 
@@ -124,11 +112,11 @@ class ScriptHelper
      *
      * @deprecated
      *
-     * @param mixed $styleUri
+     * @param mixed $stylesheetUri
      */
-    public static function addDeferredStyle($styleUri)
+    public static function addDeferredStyle($stylesheetUri)
     {
-        return self::addDeferredStylesheet($styleUri);
+        return self::addDeferredStylesheet($stylesheetUri);
     }
 
     /**
@@ -136,20 +124,27 @@ class ScriptHelper
      *
      * Example: ScriptHelper::addDeferredStyle('https://cdn.jsdelivr.net/npm/...instantsearch.min.css');
      *
-     * @param string $styleUri Param
+     * @param string $stylesheetUri Param
      */
-    public static function addDeferredStylesheet($styleUri)
+    public static function addDeferredStylesheet($stylesheetUri)
     {
         CMSFactory::getDocument()
             ->addCustomTag('<link rel="preload" href="'.
-            $styleUri.'" as="style" onload="this.onload=null;this.rel=\'stylesheet\'">');
+            $stylesheetUri.'" as="style" onload="this.onload=null;this.rel=\'stylesheet\'">');
         CMSFactory::getDocument()
             ->addCustomTag('<noscript><link rel="stylesheet" href="'.
-            $styleUri.'"></noscript>');
+            $stylesheetUri.'"></noscript>');
 
         // Alternative XT Html Asset Tags Builder
-        $linkStylesheetTag = LinkStylesheetTag::create($styleUri);
+        $linkStylesheetTag = LinkStylesheetTag::create($stylesheetUri);
         HtmlAssetRepository::getInstance()->push($linkStylesheetTag);
+    }
+
+    public static function addDeferredExtensionStylesheet($extensionRelativeScript, $options = [])
+    {
+        $uri = self::resolveExtensionStylesheetUri($extensionRelativeScript, $options);
+
+        return self::addDeferredStylesheet($uri, $options);
     }
 
     /**
@@ -163,11 +158,8 @@ class ScriptHelper
      */
     public static function addInlineStylesheet($extensionRelativeStylesheet, $options = [])
     {
-        $defaultOptions = ['relative' => true, 'pathOnly' => true];
-        $options = array_merge($defaultOptions, $options);
-
-        $uriPath = CMSHTMLHelper::stylesheet($extensionRelativeStylesheet, $options);
-        $filePath = JPATH_ROOT.$uriPath;
+        $uri = self::resolveExtensionStylesheetUri($extensionRelativeStylesheet, $options);
+        $filePath = JPATH_ROOT.$uri;
 
         // The Uri can be mapped to a directory (subfolders?)
         if (file_exists($filePath)) {
@@ -183,10 +175,10 @@ class ScriptHelper
         }
 
         // Just load the StyleSheet
-        CMSFactory::getDocument()->addStyleSheet($uriPath);
+        CMSFactory::getDocument()->addStyleSheet($uri);
 
         // Alternative XT Html Asset Tags Builder
-        $stylesheetTag = LinkStylesheetTag::create($uriPath);
+        $stylesheetTag = LinkStylesheetTag::create($uri);
         HtmlAssetRepository::getInstance()->push($stylesheetTag);
 
         return true;
@@ -202,11 +194,8 @@ class ScriptHelper
      */
     public static function addInlineScript($extensionRelativeScript, $options = [])
     {
-        $defaultOptions = ['relative' => true, 'pathOnly' => true];
-        $options = array_merge($defaultOptions, $options);
-
-        $uriPath = CMSHTMLHelper::script($extensionRelativeScript, $options);
-        $filePath = JPATH_ROOT.$uriPath;
+        $uri = self::resolveExtensionScriptUri($extensionRelativeScript, $options);
+        $filePath = JPATH_ROOT.$uri;
 
         // The Uri can be mapped to a directory (subfolders?)
         if (file_exists($filePath)) {
@@ -222,6 +211,25 @@ class ScriptHelper
         }
 
         return self::addDeferredExtensionScript($extensionRelativeScript);
+    }
+
+    private function resolveExtensionStylesheetUri($extensionRelativeStylesheet, $options = [])
+    {
+        $defaultOptions = ['relative' => true, 'pathOnly' => true];
+        $options = array_merge($defaultOptions, $options);
+
+        return CMSHTMLHelper::stylesheet($extensionRelativeStylesheet, $options);
+    }
+
+    private function resolveExtensionScriptUri($extensionRelativeScript, $options = [])
+    {
+        $defaultOptions = ['relative' => true, 'pathOnly' => true];
+        $options = array_merge($defaultOptions, $options);
+
+        return CMSHTMLHelper::script(
+            $extensionRelativeScript,
+            $options
+        );
     }
 
     private static function addScriptToDocument($include, $attribs)
