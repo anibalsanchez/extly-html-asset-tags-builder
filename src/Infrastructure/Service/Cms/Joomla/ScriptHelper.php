@@ -145,7 +145,7 @@ class ScriptHelper
     {
         $uri = self::resolveExtensionStylesheetUri($extensionRelativeScript, $options);
 
-        return self::addDeferredStylesheet($uri, $options);
+        return self::addDeferredStylesheet(self::addMediaVersion($uri), $options);
     }
 
     /**
