@@ -122,11 +122,23 @@ class ScriptHelper
     /**
      * addDeferredStyle.
      *
+     * @deprecated
+     *
+     * @param mixed $styleUri
+     */
+    public static function addDeferredStyle($styleUri)
+    {
+        return self::addDeferredStylesheet($styleUri);
+    }
+
+    /**
+     * addDeferredStylesheet.
+     *
      * Example: ScriptHelper::addDeferredStyle('https://cdn.jsdelivr.net/npm/...instantsearch.min.css');
      *
      * @param string $styleUri Param
      */
-    public static function addDeferredStyle($styleUri)
+    public static function addDeferredStylesheet($styleUri)
     {
         CMSFactory::getDocument()
             ->addCustomTag('<link rel="preload" href="'.
