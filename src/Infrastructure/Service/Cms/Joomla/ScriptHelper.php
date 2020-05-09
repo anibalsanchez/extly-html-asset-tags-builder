@@ -214,6 +214,17 @@ class ScriptHelper
         return self::addDeferredExtensionScript($extensionRelativeScript);
     }
 
+    public static function addMediaVersion($uri)
+    {
+        $mediaversion = (new CMSVersion())->getMediaVersion();
+
+        if (false !== strpos($uri, '?')) {
+            return $uri.'?'.$mediaversion;
+        }
+
+        return $uri.'&'.$mediaversion;
+    }
+
     private function resolveExtensionStylesheetUri($extensionRelativeStylesheet, $options = [])
     {
         $defaultOptions = ['relative' => true, 'pathOnly' => true];
@@ -251,16 +262,5 @@ class ScriptHelper
         }
 
         $document->addScript($include, $options, $attribs);
-    }
-
-    private static function addMediaVersion($uri)
-    {
-        $mediaversion = (new CMSVersion())->getMediaVersion();
-
-        if (false !== strpos($uri, '?')) {
-            return $uri.'?'.$mediaversion;
-        }
-
-        return $uri.'&'.$mediaversion;
     }
 }
