@@ -18,6 +18,7 @@ final class LinkPreloadStylesheetTag extends HtmlAssetTagAbstract implements Htm
 {
     use CreatorTrait;
 
+    // Defer non-critical CSS - https://web.dev/defer-non-critical-css/
     const DEFAULT_ATTRIBUTES = [
         'rel' => 'preload',
         'as' => 'style',

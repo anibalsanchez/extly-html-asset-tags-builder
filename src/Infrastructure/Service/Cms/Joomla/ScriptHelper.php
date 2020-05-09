@@ -124,18 +124,20 @@ class ScriptHelper
      *
      * Example: ScriptHelper::addDeferredStyle('https://cdn.jsdelivr.net/npm/...instantsearch.min.css');
      *
-     * @param string $extensionStyleHref Param
+     * @param string $styleUri Param
      */
-    public static function addDeferredStyle($extensionStyleHref)
+    public static function addDeferredStyle($styleUri)
     {
-        $script = '!function(e){var t=document.createElement("link");t.rel="stylesheet",t.href="'.
-            $extensionStyleHref.
-            '",t.type="text/css";var n=document.getElementsByTagName("link")[0];n.parentNode.insertBefore(t,n)}();';
-        CMSFactory::getDocument()->addScriptDeclaration($script);
+        CMSFactory::getDocument()
+            ->addCustomTag('<link rel="preload" href="'.
+            $styleUri.'" as="style" onload="this.onload=null;this.rel=\'stylesheet\'">');
+        CMSFactory::getDocument()
+            ->addCustomTag('<noscript><link rel="stylesheet" href="'.
+            $styleUri.'"></noscript>');
 
         // Alternative XT Html Asset Tags Builder
-        $inlineScriptTag = InlineScriptTag::create($script);
-        HtmlAssetRepository::getInstance()->push($inlineScriptTag);
+        $linkStylesheetTag = LinkStylesheetTag::create($styleUri);
+        HtmlAssetRepository::getInstance()->push($linkStylesheetTag);
     }
 
     /**
