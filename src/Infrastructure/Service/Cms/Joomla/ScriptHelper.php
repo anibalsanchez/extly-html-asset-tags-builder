@@ -219,10 +219,10 @@ class ScriptHelper
         $mediaversion = (new CMSVersion())->getMediaVersion();
 
         if (false !== strpos($uri, '?')) {
-            return $uri.'?'.$mediaversion;
+            return $uri.'&'.$mediaversion;
         }
 
-        return $uri.'&'.$mediaversion;
+        return $uri.'?'.$mediaversion;
     }
 
     private function resolveExtensionStylesheetUri($extensionRelativeStylesheet, $options = [])
