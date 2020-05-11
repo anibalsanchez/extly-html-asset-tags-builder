@@ -80,13 +80,13 @@ class ScriptHelper
      */
     public static function addDeferredExtensionScript($extensionScript, $attribs = [])
     {
-        $extensionScriptUriWithMediaVersion = self::addMediaVersion(
+        $uriWithMediaVersion = self::addMediaVersion(
             self::resolveExtensionScriptUri($extensionScript, $attribs)
         );
-        self::addScriptToDocument($extensionScriptUriWithMediaVersion, $attribs);
+        self::addScriptToDocument($uriWithMediaVersion, $attribs);
 
         // Alternative XT Html Asset Tags Builder
-        $scriptTag = ScriptTag::create($extensionScriptUriWithMediaVersion, $attribs);
+        $scriptTag = ScriptTag::create($uriWithMediaVersion, $attribs);
         HtmlAssetRepository::getInstance()->push($scriptTag);
     }
 
@@ -146,8 +146,9 @@ class ScriptHelper
 
     public static function addDeferredExtensionStylesheet($extensionRelativeScript, $options = [])
     {
-        $uri = self::resolveExtensionStylesheetUri($extensionRelativeScript, $options);
-        $uriWithMediaVersion = self::addMediaVersion($uri);
+        $uriWithMediaVersion = self::addMediaVersion(
+            self::resolveExtensionStylesheetUri($extensionRelativeScript, $options)
+        );
 
         return self::addDeferredStylesheet($uriWithMediaVersion, $options);
     }
