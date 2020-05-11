@@ -30,7 +30,7 @@ class ScriptHelper
 
     public static function addScript($url, $options = [], $attribs = [])
     {
-        if (!isset($options['version'])) {
+        if (\is_array($options) && !isset($options['version'])) {
             $options['version'] = 'auto';
         }
 
