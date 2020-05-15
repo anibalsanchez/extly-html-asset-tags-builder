@@ -58,7 +58,7 @@ class ScriptHelper
     {
         $uriWithMediaVersion = self::addClient(
             self::addMediaVersion(
-                self::resolveExtensionScriptUri($extensionScript, $options),
+                self::resolveExtensionScriptUri($extensionScript, $options)
             ),
             $options
         );
