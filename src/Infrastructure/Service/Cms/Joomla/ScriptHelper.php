@@ -19,38 +19,13 @@ use Extly\Infrastructure\Support\HtmlAsset\Asset\ScriptTag;
 use Extly\Infrastructure\Support\HtmlAsset\Repository as HtmlAssetRepository;
 use Joomla\CMS\Factory as CMSFactory;
 use Joomla\CMS\HTML\HTMLHelper as CMSHTMLHelper;
+use Joomla\CMS\Uri\Uri as CMSUri;
 use Joomla\CMS\Version as CMSVersion;
 
 class ScriptHelper
 {
-    public static function addStylesheet($url)
-    {
-        return self::addDeferredStylesheet($url);
-    }
-
-    public static function addScript($url, $options = [], $attribs = [])
-    {
-        if (\is_array($options) && !isset($options['version'])) {
-            $options['version'] = 'auto';
-        }
-
-        return self::addScriptVersion($url, $options, $attribs);
-    }
-
-    public static function addScriptVersion($url, $options = [], $attribs = [])
-    {
-        if (\is_string($options) &&
-            false === strpos($url, '?') &&
-            'text/javascript' !== $options) {
-            $url = $url.'?'.$options;
-        }
-
-        if (!\is_array($attribs)) {
-            $attribs = [];
-        }
-
-        return self::addDeferredScript($url, $attribs);
-    }
+    const CLIENT_FRONTEND = 1;
+    const CLIENT_ADMINISTRATOR = 0;
 
     public static function addScriptDeclaration($script)
     {
@@ -77,17 +52,33 @@ class ScriptHelper
      *
      * @param string $extensionScript Param
      * @param mixed  $attribs         Html Attributes
+     * @param mixed  $options
      */
-    public static function addDeferredExtensionScript($extensionScript, $attribs = [])
+    public static function addDeferredExtensionScript($extensionScript, $options = [], $attribs = [])
     {
-        $uriWithMediaVersion = self::addMediaVersion(
-            self::resolveExtensionScriptUri($extensionScript, $attribs)
+        $uriWithMediaVersion = self::addClient(
+            self::addMediaVersion(
+                self::resolveExtensionScriptUri($extensionScript, $options),
+            ),
+            $options
         );
-        self::addScriptToDocument($uriWithMediaVersion, $attribs);
+        self::addScriptToDocument($uriWithMediaVersion, $options, $attribs);
 
         // Alternative XT Html Asset Tags Builder
         $scriptTag = ScriptTag::create($uriWithMediaVersion, $attribs);
         HtmlAssetRepository::getInstance()->push($scriptTag);
+    }
+
+    public static function addDeferredExtensionStylesheet($extensionRelativeScript, $options = [], $attribs = [])
+    {
+        $uriWithMediaVersion = self::addClient(
+            self::addMediaVersion(
+                self::resolveExtensionStylesheetUri($extensionRelativeScript, $options)
+            ),
+            $options
+        );
+
+        return self::addDeferredStylesheet($uriWithMediaVersion, $options, $attribs);
     }
 
     /**
@@ -97,13 +88,17 @@ class ScriptHelper
      *
      * @param string $extensionScriptUri Param
      * @param mixed  $attribs            Html Attributes
+     * @param mixed  $options
      */
-    public static function addDeferredScript($extensionScriptUri, $attribs = [])
+    public static function addDeferredScript($extensionScriptUri, $options = [], $attribs = [])
     {
+        $defaultOptions = ['version' => 'auto'];
+        $options = array_merge($defaultOptions, $options);
+
         $defaultAttribs = ['defer' => true];
         $attribs = array_merge($defaultAttribs, $attribs);
 
-        CMSFactory::getDocument()->addScript($extensionScriptUri, ['version' => 'auto'], $attribs);
+        CMSFactory::getDocument()->addScript($extensionScriptUri, $options, $attribs);
 
         // Alternative XT Html Asset Tags Builder
         $scriptTag = ScriptTag::create($extensionScriptUri, $attribs);
@@ -117,8 +112,10 @@ class ScriptHelper
      * ScriptHelper::addDeferredStylesheet('https://cdn.jsdelivr.net/npm/...instantsearch.min.css');
      *
      * @param string $stylesheetUri Param
+     * @param mixed  $options
+     * @param mixed  $attribs
      */
-    public static function addDeferredStylesheet($stylesheetUri)
+    public static function addDeferredStylesheet($stylesheetUri, $options = [], $attribs = [])
     {
         CMSFactory::getDocument()
             ->addCustomTag('<link rel="preload" href="'.
@@ -128,29 +125,38 @@ class ScriptHelper
             $stylesheetUri.'"></noscript>');
 
         // Alternative XT Html Asset Tags Builder
-        $linkStylesheetTag = LinkStylesheetTag::create($stylesheetUri);
+        $linkStylesheetTag = LinkStylesheetTag::create($stylesheetUri, $attribs);
         HtmlAssetRepository::getInstance()->push($linkStylesheetTag);
     }
 
     /**
-     * addDeferredStyle.
+     * addInlineScript (Extension).
      *
-     * @deprecated
+     * Example: ScriptHelper::addInlineScript('lib_xtdir4alg/app/autocomplete.min.js');
      *
-     * @param mixed $stylesheetUri
+     * @param mixed $extensionRelativeScript
+     * @param mixed $options
+     * @param mixed $attribs
      */
-    public static function addDeferredStyle($stylesheetUri)
+    public static function addInlineExtensionScript($extensionRelativeScript, $options = [], $attribs = [])
     {
-        return self::addDeferredStylesheet($stylesheetUri);
-    }
+        $uri = self::resolveExtensionScriptUri($extensionRelativeScript, $options);
+        $filePath = JPATH_ROOT.'/'.$uri;
 
-    public static function addDeferredExtensionStylesheet($extensionRelativeScript, $options = [])
-    {
-        $uriWithMediaVersion = self::addMediaVersion(
-            self::resolveExtensionStylesheetUri($extensionRelativeScript, $options)
-        );
+        // The Uri can be mapped to a directory (subfolders?)
+        if (file_exists($filePath)) {
+            $scriptDeclaration = file_get_contents($filePath);
 
-        return self::addDeferredStylesheet($uriWithMediaVersion, $options);
+            CMSFactory::getDocument()->addScriptDeclaration($scriptDeclaration);
+
+            // Alternative XT Html Asset Tags Builder
+            $inlineScriptTag = InlineScriptTag::create($scriptDeclaration);
+            HtmlAssetRepository::getInstance()->push($inlineScriptTag);
+
+            return true;
+        }
+
+        return self::addDeferredExtensionScript($extensionRelativeScript, $options, $attribs);
     }
 
     /**
@@ -161,8 +167,9 @@ class ScriptHelper
      * @param string $extensionStyle
      * @param mixed  $extensionRelativeStylesheet
      * @param mixed  $options
+     * @param mixed  $attribs
      */
-    public static function addInlineStylesheet($extensionRelativeStylesheet, $options = [])
+    public static function addInlineExtensionStylesheet($extensionRelativeStylesheet, $options = [], $attribs = [])
     {
         $uri = self::resolveExtensionStylesheetUri($extensionRelativeStylesheet, $options);
         $filePath = JPATH_ROOT.'/'.$uri;
@@ -181,36 +188,7 @@ class ScriptHelper
         }
 
         // Fallback
-        return self::addDeferredExtensionStylesheet($extensionRelativeStylesheet, $options);
-    }
-
-    /**
-     * addInlineScript (Extension).
-     *
-     * Example: ScriptHelper::addInlineScript('lib_xtdir4alg/app/autocomplete.min.js');
-     *
-     * @param mixed $extensionRelativeScript
-     * @param mixed $options
-     */
-    public static function addInlineScript($extensionRelativeScript, $options = [])
-    {
-        $uri = self::resolveExtensionScriptUri($extensionRelativeScript, $options);
-        $filePath = JPATH_ROOT.'/'.$uri;
-
-        // The Uri can be mapped to a directory (subfolders?)
-        if (file_exists($filePath)) {
-            $scriptDeclaration = file_get_contents($filePath);
-
-            CMSFactory::getDocument()->addScriptDeclaration($scriptDeclaration);
-
-            // Alternative XT Html Asset Tags Builder
-            $inlineScriptTag = InlineScriptTag::create($scriptDeclaration);
-            HtmlAssetRepository::getInstance()->push($inlineScriptTag);
-
-            return true;
-        }
-
-        return self::addDeferredExtensionScript($extensionRelativeScript);
+        return self::addDeferredExtensionStylesheet($extensionRelativeStylesheet, $options, $attribs);
     }
 
     public static function addMediaVersion($uri)
@@ -222,6 +200,84 @@ class ScriptHelper
         }
 
         return $uri.'?'.$mediaversion;
+    }
+
+    public static function addClient($uriRelative, $options = [])
+    {
+        $hasClient = \is_array($options) && isset($options['client']);
+
+        if (!$hasClient) {
+            return $uriRelative;
+        }
+
+        $client = $options['client'];
+
+        $uriBase = CMSUri::root();
+
+        if (self::CLIENT_FRONTEND === $client) {
+            $uriBase = CMSUri::base();
+        }
+
+        return rtrim($uriBase, '/').'/'.$uriRelative;
+    }
+
+    // Alias addInlineExtensionScript
+    public static function addInlineScript($extensionRelativeScript, $options = [])
+    {
+        return self::addInlineExtensionScript($extensionRelativeScript, $options);
+    }
+
+    // Alias addInlineExtensionStylesheet
+    public static function addInlineStylesheet($extensionRelativeStylesheet, $options = [])
+    {
+        return self::addInlineExtensionStylesheet($extensionRelativeStylesheet, $options);
+    }
+
+    // Alias addDeferredStylesheet
+    public static function addStylesheet($url)
+    {
+        return self::addDeferredStylesheet($url);
+    }
+
+    // Alias addScriptVersion + version auto
+    public static function addScript($url, $options = [], $attribs = [])
+    {
+        if (\is_array($options) && !isset($options['version'])) {
+            $options['version'] = 'auto';
+        }
+
+        return self::addScriptVersion($url, $options, $attribs);
+    }
+
+    // Alias addDeferredScript + options string
+    public static function addScriptVersion($url, $options = [], $attribs = [])
+    {
+        if (\is_string($options) &&
+            false === strpos($url, '?') &&
+            'text/javascript' !== $options) {
+            $url = $url.'?'.$options;
+            $options = [];
+        }
+
+        if (!\is_array($attribs)) {
+            $attribs = [];
+        }
+
+        return self::addDeferredScript($url, $options, $attribs);
+    }
+
+    /**
+     * addDeferredStyle.
+     *
+     * @deprecated
+     *
+     * @param mixed $stylesheetUri
+     * @param mixed $options
+     * @param mixed $attribs
+     */
+    public static function addDeferredStyle($stylesheetUri, $options = [], $attribs = [])
+    {
+        return self::addDeferredStylesheet($stylesheetUri, $options = [], $attribs = []);
     }
 
     private function resolveExtensionStylesheetUri($extensionRelativeStylesheet, $options = [])
@@ -247,23 +303,23 @@ class ScriptHelper
         return ltrim($uri, '/');
     }
 
-    private static function addScriptToDocument($include, $attribs)
+    private static function addScriptToDocument($scriptUri, $options = [], $attribs = [])
     {
         // Pasted from libraries/src/HTML/HTMLHelper.php, 730
-        $options = [];
+        // $options = [];
 
         // If inclusion is required
         $document = CMSFactory::getDocument();
 
         // If there is already a version hash in the script reference (by using deprecated MD5SUM).
-        if ($pos = false !== strpos($include, '?')) {
-            $options['version'] = substr($include, $pos + 1);
+        if ($pos = false !== strpos($scriptUri, '?')) {
+            $options['version'] = substr($scriptUri, $pos + 1);
         }
 
         if (!isset($options['version'])) {
             $options['version'] = 'auto';
         }
 
-        $document->addScript($include, $options, $attribs);
+        $document->addScript($scriptUri, $options, $attribs);
     }
 }
