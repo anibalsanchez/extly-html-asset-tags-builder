@@ -212,10 +212,10 @@ class ScriptHelper
 
         $client = $options['client'];
 
-        $uriBase = CMSUri::root();
+        $uriBase = CMSUri::base();
 
         if (self::CLIENT_FRONTEND === $client) {
-            $uriBase = CMSUri::base();
+            $uriBase = CMSUri::root();
         }
 
         return rtrim($uriBase, '/').'/'.$uriRelative;
