@@ -118,8 +118,8 @@ class ScriptHelper
     public static function addDeferredStylesheet($stylesheetUri, $options = [], $attribs = [])
     {
         CMSFactory::getDocument()
-            ->addCustomTag('<link rel="preload" href="'.
-            $stylesheetUri.'" as="style" onload="this.onload=null;this.rel=\'stylesheet\'">');
+            ->addCustomTag('<link rel="stylesheet" media="print" href="'.
+            $stylesheetUri.'" onload="this.media=\'all\'; this.onload=null;">');
         CMSFactory::getDocument()
             ->addCustomTag('<noscript><link rel="stylesheet" href="'.
             $stylesheetUri.'"></noscript>');
