@@ -21,7 +21,7 @@ final class LinkPreloadStylesheetTag extends HtmlAssetTagAbstract implements Htm
     const DEFAULT_ATTRIBUTES = [
         'rel' => 'stylesheet',
         'media' => 'print',
-        'onload' => 'this.media"all"; this.onload=null;',
+        'onload' => 'this.media="all"; this.onload=null;',
     ];
 
     public function __construct(string $href, array $attributes = [])
