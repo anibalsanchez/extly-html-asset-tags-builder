@@ -115,7 +115,7 @@ class HtmlAssetTagsBuilderTest extends TestCase
 
         $htmlAssetBuilder = HtmlAssetTagsBuilder::create($repository);
         $script = $htmlAssetBuilder->generate(Repository::GLOBAL_POSITION_HEAD);
-        $this->assertSame('<link rel="preload" as="style" onload="this.onload=null;this.rel = &quot;stylesheet&quot;" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css"><noscript><link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css"></noscript>', $script);
+        $this->assertSame('<link rel="stylesheet" media="print" onload="this.media&quot;all&quot;; this.onload=null;" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css"><noscript><link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css"></noscript>', $script);
     }
 
     public function testLinkCriticalStylesheetTag()
@@ -195,6 +195,6 @@ class HtmlAssetTagsBuilderTest extends TestCase
 
         $htmlAssetBuilder = HtmlAssetTagsBuilder::create($repository);
         $script = $htmlAssetBuilder->generate(Repository::GLOBAL_POSITION_HEAD);
-        $this->assertSame('<style>body {color: #fff}</style><script>console.log("A Test");</script><link rel="preload" as="style" onload="this.onload=null;this.rel = &quot;stylesheet&quot;" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css"><script async src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.4/redux.min.js"></script><style>p {color: #f00}</style><noscript><link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css"></noscript>', $script);
+        $this->assertSame('<style>body {color: #fff}</style><script>console.log("A Test");</script><link rel="stylesheet" media="print" onload="this.media&quot;all&quot;; this.onload=null;" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css"><script async src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.4/redux.min.js"></script><style>p {color: #f00}</style><noscript><link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css"></noscript>', $script);
     }
 }

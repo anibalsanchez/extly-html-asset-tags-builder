@@ -18,11 +18,10 @@ final class LinkPreloadStylesheetTag extends HtmlAssetTagAbstract implements Htm
 {
     use CreatorTrait;
 
-    // Defer non-critical CSS - https://web.dev/defer-non-critical-css/
     const DEFAULT_ATTRIBUTES = [
-        'rel' => 'preload',
-        'as' => 'style',
-        'onload' => 'this.onload=null;this.rel = "stylesheet"',
+        'rel' => 'stylesheet',
+        'media' => 'print',
+        'onload' => 'this.media"all"; this.onload=null;',
     ];
 
     public function __construct(string $href, array $attributes = [])
@@ -30,6 +29,20 @@ final class LinkPreloadStylesheetTag extends HtmlAssetTagAbstract implements Htm
         $attributes['href'] = $href;
         $noScriptTag = LinkCriticalStylesheetTag::create($href);
 
+        // <link rel="stylesheet" href="/path/to/my.css" media="print" onload="this.media='all'; this.onload=null;">
         parent::__construct('link', '', array_merge(self::DEFAULT_ATTRIBUTES, $attributes), $noScriptTag);
     }
 }
+
+//
+// Defer non-critical CSS - https://web.dev/defer-non-critical-css/
+// Firefox doesn't support it: https://caniuse.com/#feat=link-rel-preload
+//
+// const DEFAULT_ATTRIBUTES = [
+//     'rel' => 'preload',
+//     'as' => 'style',
+//     'onload' => 'this.onload=null;this.rel = "stylesheet"',
+// ];
+// $attributes['href'] = $href;
+//
+// parent::__construct('link', '', array_merge(self::DEFAULT_ATTRIBUTES, $attributes), $noScriptTag);
