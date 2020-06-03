@@ -22,14 +22,20 @@ use Joomla\CMS\HTML\HTMLHelper as CMSHTMLHelper;
 use Joomla\CMS\Uri\Uri as CMSUri;
 use Joomla\CMS\Version as CMSVersion;
 
-class ScriptHelper
+final class ScriptHelper
 {
     const CLIENT_FRONTEND = 1;
     const CLIENT_ADMINISTRATOR = 0;
 
     public static function addScriptDeclaration($script)
     {
-        CMSFactory::getDocument()->addScriptDeclaration($script);
+        $document = self::getHtmlDocument();
+
+        if (!$document) {
+            return;
+        }
+
+        $document->addScriptDeclaration($script);
 
         // Alternative XT Html Asset Tags Builder
         $inlineScriptTag = InlineScriptTag::create($script);
@@ -38,7 +44,13 @@ class ScriptHelper
 
     public static function addStyleDeclaration($style)
     {
-        CMSFactory::getDocument()->addStyleDeclaration($style);
+        $document = self::getHtmlDocument();
+
+        if (!$document) {
+            return;
+        }
+
+        $document->addStyleDeclaration($style);
 
         // Alternative XT Html Asset Tags Builder
         $inlineStyleTag = InlineStyleTag::create($style);
@@ -92,13 +104,19 @@ class ScriptHelper
      */
     public static function addDeferredScript($extensionScriptUri, $options = [], $attribs = [])
     {
+        $document = self::getHtmlDocument();
+
+        if (!$document) {
+            return;
+        }
+
         $defaultOptions = ['version' => 'auto'];
         $options = array_merge($defaultOptions, $options);
 
         $defaultAttribs = ['defer' => true];
         $attribs = array_merge($defaultAttribs, $attribs);
 
-        CMSFactory::getDocument()->addScript($extensionScriptUri, $options, $attribs);
+        $document->addScript($extensionScriptUri, $options, $attribs);
 
         // Alternative XT Html Asset Tags Builder
         $scriptTag = ScriptTag::create($extensionScriptUri, $attribs);
@@ -117,11 +135,15 @@ class ScriptHelper
      */
     public static function addDeferredStylesheet($stylesheetUri, $options = [], $attribs = [])
     {
-        CMSFactory::getDocument()
-            ->addCustomTag('<link rel="stylesheet" media="print" href="'.
+        $document = self::getHtmlDocument();
+
+        if (!$document) {
+            return;
+        }
+
+        $document->addCustomTag('<link rel="stylesheet" media="print" href="'.
             $stylesheetUri.'" onload="this.media=\'all\'; this.onload=null;">');
-        CMSFactory::getDocument()
-            ->addCustomTag('<noscript><link rel="stylesheet" href="'.
+        $document->addCustomTag('<noscript><link rel="stylesheet" href="'.
             $stylesheetUri.'"></noscript>');
 
         // Alternative XT Html Asset Tags Builder
@@ -140,6 +162,12 @@ class ScriptHelper
      */
     public static function addInlineExtensionScript($extensionRelativeScript, $options = [], $attribs = [])
     {
+        $document = self::getHtmlDocument();
+
+        if (!$document) {
+            return;
+        }
+
         $uri = self::resolveExtensionScriptUri($extensionRelativeScript, $options);
         $filePath = JPATH_ROOT.'/'.$uri;
 
@@ -147,7 +175,7 @@ class ScriptHelper
         if (file_exists($filePath)) {
             $scriptDeclaration = file_get_contents($filePath);
 
-            CMSFactory::getDocument()->addScriptDeclaration($scriptDeclaration);
+            $document->addScriptDeclaration($scriptDeclaration);
 
             // Alternative XT Html Asset Tags Builder
             $inlineScriptTag = InlineScriptTag::create($scriptDeclaration);
@@ -171,6 +199,12 @@ class ScriptHelper
      */
     public static function addInlineExtensionStylesheet($extensionRelativeStylesheet, $options = [], $attribs = [])
     {
+        $document = self::getHtmlDocument();
+
+        if (!$document) {
+            return;
+        }
+
         $uri = self::resolveExtensionStylesheetUri($extensionRelativeStylesheet, $options);
         $filePath = JPATH_ROOT.'/'.$uri;
 
@@ -178,7 +212,7 @@ class ScriptHelper
         if (file_exists($filePath)) {
             $styleDeclaration = file_get_contents($filePath);
 
-            CMSFactory::getDocument()->addStyleDeclaration($styleDeclaration);
+            $document->addStyleDeclaration($styleDeclaration);
 
             // Alternative XT Html Asset Tags Builder
             $inlineStyleTag = InlineStyleTag::create($styleDeclaration);
@@ -305,11 +339,16 @@ class ScriptHelper
 
     private static function addScriptToDocument($scriptUri, $options = [], $attribs = [])
     {
+        $document = self::getHtmlDocument();
+
+        if (!$document) {
+            return;
+        }
+
         // Pasted from libraries/src/HTML/HTMLHelper.php, 730
         // $options = [];
 
         // If inclusion is required
-        $document = CMSFactory::getDocument();
 
         // If there is already a version hash in the script reference (by using deprecated MD5SUM).
         if ($pos = false !== strpos($scriptUri, '?')) {
@@ -321,5 +360,16 @@ class ScriptHelper
         }
 
         $document->addScript($scriptUri, $options, $attribs);
+    }
+
+    private static function getHtmlDocument()
+    {
+        $document = CMSFactory::getDocument();
+
+        if ('html' === $document->getType()) {
+            return $document;
+        }
+
+        return null;
     }
 }
