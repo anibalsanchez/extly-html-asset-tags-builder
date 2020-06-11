@@ -13,22 +13,25 @@
 namespace Extly\Infrastructure\Support\HtmlAsset\Asset;
 
 use Extly\Infrastructure\Creator\CreatorTrait;
+use Extly\Infrastructure\Support\HtmlAsset\Repository;
 
+/**
+ * @deprecated
+ */
 final class LinkStylesheetTag extends HtmlAssetTagAbstract implements HtmlAssetTagInterface
 {
     use CreatorTrait;
 
     public function __construct(string $href, array $attributes = [])
     {
-        $attributes['href'] = $href;
+        // Similar to LinkDeferStylesheetTag
+        $defaultAttributes = [
+            'position' => Repository::GLOBAL_POSITION_BODY,
+        ];
 
-        parent::__construct(
-            'link',
-            '',
-            array_merge(
-                LinkPreloadStylesheetTag::DEFAULT_ATTRIBUTES,
-                $attributes
-            )
-        );
+        $script = LinkStylesheetByScript::renderScript($href);
+        $noScriptTag = LinkCriticalStylesheetTag::create($href);
+
+        parent::__construct('script', $script, array_merge($defaultAttributes, $attributes), $noScriptTag);
     }
 }

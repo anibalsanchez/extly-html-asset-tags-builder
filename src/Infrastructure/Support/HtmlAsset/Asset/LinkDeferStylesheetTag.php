@@ -21,6 +21,7 @@ final class LinkDeferStylesheetTag extends HtmlAssetTagAbstract implements HtmlA
 
     public function __construct(string $href, array $attributes = [])
     {
+        // Similar to LinkStylesheetTag
         $defaultAttributes = [
             'position' => Repository::GLOBAL_POSITION_BODY,
         ];

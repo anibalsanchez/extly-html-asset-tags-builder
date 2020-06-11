@@ -27,17 +27,17 @@ The tags builder has the following predefined ways to include these scripts and 
 - InlineStyleTag
 - LinkCriticalStylesheetTag
 - LinkPreloadStylesheetTag
-- LinkStylesheetTag
+- LinkDeferStylesheetTag
 - ScriptTag
 
-For instance, `ScriptTag` defers the script and the `LinkStylesheetTag` loads the stylesheet with a script at the end of the body.
+For instance, `ScriptTag` defers the script and the `LinkDeferStylesheetTag` loads the stylesheet with a script at the end of the body.
 
 Sample code:
 
 ```php
 use Extly\Infrastructure\Support\HtmlAsset\Asset\InlineScriptTag;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\LinkCriticalStylesheetTag;
-use Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetTag;
+use Extly\Infrastructure\Support\HtmlAsset\Asset\LinkDeferStylesheetTag;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\ScriptTag;
 
 // Add template js
@@ -58,7 +58,7 @@ if (!empty($headScripts)) {
 }
 
 // FontAwesome at the end of the body
-$linkStylesheetTag = LinkStylesheetTag::create('https://use.fontawesome.com/releases/v5.6.3/css/all.css');
+$linkStylesheetTag = LinkDeferStylesheetTag::create('https://use.fontawesome.com/releases/v5.6.3/css/all.css');
 $htmlAssetRepository->push($linkStylesheetTag);
 ```
 

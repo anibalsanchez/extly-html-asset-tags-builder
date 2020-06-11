@@ -16,7 +16,7 @@ use Extly\Infrastructure\Support\HtmlAsset\Asset\InlineScriptTag;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\InlineStyleTag;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\LinkCriticalStylesheetTag;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetByScript;
-use Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetTag;
+use Extly\Infrastructure\Support\HtmlAsset\Asset\LinkDeferStylesheetTag;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\ScriptTag;
 use Extly\Infrastructure\Support\HtmlAsset\HtmlAssetTagsBuilder;
 use Extly\Infrastructure\Support\HtmlAsset\Repository as HtmlAssetRepository;
@@ -152,7 +152,7 @@ final class ScriptHelper
         $document->addCustomTag($noScriptTag);
 
         // Alternative XT Html Asset Tags Builder
-        $linkStylesheetTag = LinkStylesheetTag::create($stylesheetUri, $attribs);
+        $linkStylesheetTag = LinkDeferStylesheetTag::create($stylesheetUri, $attribs);
         HtmlAssetRepository::getInstance()->push($linkStylesheetTag);
     }
 

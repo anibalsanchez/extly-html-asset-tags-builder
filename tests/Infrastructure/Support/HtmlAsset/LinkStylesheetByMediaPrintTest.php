@@ -12,8 +12,8 @@
 
 namespace Tests\Infrastructure\Support\HtmlAsset;
 
-use Extly\Infrastructure\Support\HtmlAsset\HtmlAssetTagsBuilder;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetByMediaPrint;
+use Extly\Infrastructure\Support\HtmlAsset\HtmlAssetTagsBuilder;
 use PHPUnit\Framework\TestCase;
 
 /**
