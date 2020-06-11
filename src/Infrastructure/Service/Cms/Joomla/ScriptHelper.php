@@ -15,8 +15,8 @@ namespace Extly\Infrastructure\Service\Cms\Joomla;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\InlineScriptTag;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\InlineStyleTag;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\LinkCriticalStylesheetTag;
-use Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetByScript;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\LinkDeferStylesheetTag;
+use Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetByScript;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\ScriptTag;
 use Extly\Infrastructure\Support\HtmlAsset\HtmlAssetTagsBuilder;
 use Extly\Infrastructure\Support\HtmlAsset\Repository as HtmlAssetRepository;
@@ -148,7 +148,7 @@ final class ScriptHelper
         $document->addScriptDeclaration($script);
 
         $noScriptTagTag = LinkCriticalStylesheetTag::create($stylesheetUri);
-        $noScriptTag = HtmlAssetTagsBuilder::create()->buildTag($noScriptTagTag);
+        $noScriptTag = HtmlAssetTagsBuilder::create()->buildNoScriptTag($noScriptTagTag);
         $document->addCustomTag($noScriptTag);
 
         // Alternative XT Html Asset Tags Builder

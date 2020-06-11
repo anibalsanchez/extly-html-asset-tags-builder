@@ -65,6 +65,16 @@ final class HtmlAssetTagsBuilder
         ));
     }
 
+    public function buildNoScriptTag(HtmlAssetTagInterface $noScriptContentTag)
+    {
+        $renderedNoScriptContentTag = $this->buildTag($noScriptContentTag);
+
+        return (string) (new Element(
+            'noscript',
+            $renderedNoScriptContentTag
+        ));
+    }
+
     private function build($assetTags)
     {
         $buffer = [];
@@ -85,15 +95,5 @@ final class HtmlAssetTagsBuilder
         }
 
         return implode('', $buffer);
-    }
-
-    private function buildNoScriptTag(HtmlAssetTagInterface $noScriptContentTag)
-    {
-        $renderedNoScriptContentTag = $this->buildTag($noScriptContentTag);
-
-        return (string) (new Element(
-            'noscript',
-            $renderedNoScriptContentTag
-        ));
     }
 }
