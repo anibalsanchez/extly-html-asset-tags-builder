@@ -10,7 +10,7 @@
  * @see         https://www.extly.com
  */
 
-namespace Tests\Infrastructure\Support\HtmlAsset;
+namespace Tests\Infrastructure\Service\Cms\Joomla;
 
 use PHPUnit\Framework\TestCase;
 

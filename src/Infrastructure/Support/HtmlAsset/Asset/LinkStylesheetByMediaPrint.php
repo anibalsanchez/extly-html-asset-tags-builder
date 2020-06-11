@@ -14,7 +14,7 @@ namespace Extly\Infrastructure\Support\HtmlAsset\Asset;
 
 use Extly\Infrastructure\Creator\CreatorTrait;
 
-final class LinkPreloadStylesheetTag extends HtmlAssetTagAbstract implements HtmlAssetTagInterface
+final class LinkStylesheetByMediaPrint extends HtmlAssetTagAbstract implements HtmlAssetTagInterface
 {
     use CreatorTrait;
 
@@ -33,16 +33,3 @@ final class LinkPreloadStylesheetTag extends HtmlAssetTagAbstract implements Htm
         parent::__construct('link', '', array_merge(self::DEFAULT_ATTRIBUTES, $attributes), $noScriptTag);
     }
 }
-
-//
-// Defer non-critical CSS - https://web.dev/defer-non-critical-css/
-// Firefox doesn't support it: https://caniuse.com/#feat=link-rel-preload
-//
-// const DEFAULT_ATTRIBUTES = [
-//     'rel' => 'preload',
-//     'as' => 'style',
-//     'onload' => 'this.onload=null;this.rel = "stylesheet"',
-// ];
-// $attributes['href'] = $href;
-//
-// parent::__construct('link', '', array_merge(self::DEFAULT_ATTRIBUTES, $attributes), $noScriptTag);

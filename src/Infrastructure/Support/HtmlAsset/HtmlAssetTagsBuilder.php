@@ -53,6 +53,18 @@ final class HtmlAssetTagsBuilder
         return $renderedAssetTags.$renderedNoScriptContentTags;
     }
 
+    public function buildTag(HtmlAssetTagInterface $assetTag)
+    {
+        return (string) (new Element(
+            $assetTag->getTag(),
+            $assetTag->getInnerHTML(),
+            $assetTag->getAttributes()
+                ->forget(Repository::HTML_POSITION)
+                ->forget(Repository::HTML_PRIORITY)
+                ->toArray()
+        ));
+    }
+
     private function build($assetTags)
     {
         $buffer = [];
@@ -73,18 +85,6 @@ final class HtmlAssetTagsBuilder
         }
 
         return implode('', $buffer);
-    }
-
-    private function buildTag(HtmlAssetTagInterface $assetTag)
-    {
-        return (string) (new Element(
-            $assetTag->getTag(),
-            $assetTag->getInnerHTML(),
-            $assetTag->getAttributes()
-                ->forget(Repository::HTML_POSITION)
-                ->forget(Repository::HTML_PRIORITY)
-                ->toArray()
-        ));
     }
 
     private function buildNoScriptTag(HtmlAssetTagInterface $noScriptContentTag)

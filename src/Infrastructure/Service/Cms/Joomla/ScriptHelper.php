@@ -14,8 +14,11 @@ namespace Extly\Infrastructure\Service\Cms\Joomla;
 
 use Extly\Infrastructure\Support\HtmlAsset\Asset\InlineScriptTag;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\InlineStyleTag;
+use Extly\Infrastructure\Support\HtmlAsset\Asset\LinkCriticalStylesheetTag;
+use Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetByScript;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetTag;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\ScriptTag;
+use Extly\Infrastructure\Support\HtmlAsset\HtmlAssetTagsBuilder;
 use Extly\Infrastructure\Support\HtmlAsset\Repository as HtmlAssetRepository;
 use Joomla\CMS\Factory as CMSFactory;
 use Joomla\CMS\HTML\HTMLHelper as CMSHTMLHelper;
@@ -141,10 +144,12 @@ final class ScriptHelper
             return;
         }
 
-        $document->addCustomTag('<link rel="stylesheet" media="print" href="'.
-            $stylesheetUri.'" onload="this.media=\'all\'; this.onload=null;">');
-        $document->addCustomTag('<noscript><link rel="stylesheet" href="'.
-            $stylesheetUri.'"></noscript>');
+        $script = LinkStylesheetByScript::renderScript($stylesheetUri);
+        $document->addScriptDeclaration($script);
+
+        $noScriptTagTag = LinkCriticalStylesheetTag::create($stylesheetUri);
+        $noScriptTag = HtmlAssetTagsBuilder::create()->buildTag($noScriptTagTag);
+        $document->addCustomTag($noScriptTag);
 
         // Alternative XT Html Asset Tags Builder
         $linkStylesheetTag = LinkStylesheetTag::create($stylesheetUri, $attribs);
