@@ -243,17 +243,17 @@ final class ScriptHelper
 
     public static function addClient($uriRelative, $options = [])
     {
-        $hasClient = \is_array($options) && isset($options['client']);
-
-        if (!$hasClient) {
+        if (preg_match('/^https?:\/\//', $uriRelative)) {
             return $uriRelative;
         }
 
-        $client = $options['client'];
+        if (!self::hasClient($options)) {
+            $options['client'] = self::CLIENT_FRONTEND;
+        }
 
         $uriBase = CMSUri::base();
 
-        if (self::CLIENT_FRONTEND === $client) {
+        if (self::CLIENT_FRONTEND === $options['client']) {
             $uriBase = CMSUri::root();
         }
 
@@ -317,6 +317,11 @@ final class ScriptHelper
     public static function addDeferredStyle($stylesheetUri, $options = [], $attribs = [])
     {
         return self::addDeferredStylesheet($stylesheetUri, $options = [], $attribs = []);
+    }
+
+    private static function hasClient($options)
+    {
+        return \is_array($options) && isset($options['client']);
     }
 
     private function resolveExtensionStylesheetUri($extensionRelativeStylesheet, $options = [])
