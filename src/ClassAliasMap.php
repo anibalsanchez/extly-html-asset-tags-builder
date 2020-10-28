@@ -13,11 +13,5 @@
 use Extly\Infrastructure\Support\HtmlAsset\Asset\LinkDeferStylesheetTag;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetByScript;
 
-class_alias(
-    LinkDeferStylesheetTag::class,
-    'Extly\Infrastructure\Support\HtmlAsset\Asset\LinkPreloadStylesheetTag'
-);
-class_alias(
-    LinkStylesheetByScript::class,
-    'Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetByScriptTag'
-);
+class_alias(LinkDeferStylesheetTag::class, 'Extly\Infrastructure\Support\HtmlAsset\Asset\LinkPreloadStylesheetTag');
+class_alias(LinkStylesheetByScript::class, 'Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetByScriptTag');
