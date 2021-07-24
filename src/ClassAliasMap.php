@@ -4,14 +4,26 @@
  * @package     Extly Infrastructure Support
  *
  * @author      Extly, CB. <team@extly.com>
- * @copyright   Copyright (c)2012-2020 Extly, CB. All rights reserved.
+ * @copyright   Copyright (c)2012-2021 Extly, CB. All rights reserved.
  * @license     http://www.opensource.org/licenses/mit-license.html  MIT License
  *
  * @see         https://www.extly.com
  */
 
-use Extly\Infrastructure\Support\HtmlAsset\Asset\LinkDeferStylesheetTag;
-use Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetByScript;
+@class_alias(
+    Extly\Infrastructure\Support\HtmlAsset\Asset\LinkDeferStylesheetTag::class,
+    'Extly\Infrastructure\Support\HtmlAsset\Asset\LinkPreloadStylesheetTag'
+);
+@class_alias(
+    Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetByScript::class,
+    'Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetByScriptTag'
+);
 
-class_alias(LinkDeferStylesheetTag::class, 'Extly\Infrastructure\Support\HtmlAsset\Asset\LinkPreloadStylesheetTag');
-class_alias(LinkStylesheetByScript::class, 'Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetByScriptTag');
+@class_alias(
+    XTP_BUILD\Extly\Infrastructure\Support\HtmlAsset\Asset\LinkDeferStylesheetTag::class,
+    'XTP_BUILD\Extly\Infrastructure\Support\HtmlAsset\Asset\LinkPreloadStylesheetTag'
+);
+@class_alias(
+    XTP_BUILD\Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetByScript::class,
+    'XTP_BUILD\Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetByScriptTag'
+);
