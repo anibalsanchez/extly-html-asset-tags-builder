@@ -1,7 +1,7 @@
 <?php
 
 /*
- * @package     Extly Infrastructure Support
+ * @package     Extly HTML Asset Tags Builder
  *
  * @author      Extly, CB. <team@extly.com>
  * @copyright   Copyright (c)2012-2021 Extly, CB. All rights reserved.
@@ -12,15 +12,11 @@
 
 namespace Extly\Infrastructure\Support\HtmlAsset;
 
-use Extly\Infrastructure\Creator\CreatorTrait;
-use Extly\Infrastructure\Creator\SingletonTrait;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\HtmlAssetTagInterface;
+use Illuminate\Support\Collection;
 
 final class Repository
 {
-    use CreatorTrait;
-    use SingletonTrait;
-
     public const HTML_POSITION = 'position';
     public const HTML_PRIORITY = 'priority';
 
@@ -31,7 +27,7 @@ final class Repository
 
     public function __construct()
     {
-        $this->assetCollection = AssetCollection::make();
+        $this->assetCollection = Collection::make();
     }
 
     public function push(HtmlAssetTagInterface $htmlAsset)

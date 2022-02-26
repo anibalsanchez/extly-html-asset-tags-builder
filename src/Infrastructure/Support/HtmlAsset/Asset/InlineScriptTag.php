@@ -1,7 +1,7 @@
 <?php
 
 /*
- * @package     Extly Infrastructure Support
+ * @package     Extly HTML Asset Tags Builder
  *
  * @author      Extly, CB. <team@extly.com>
  * @copyright   Copyright (c)2012-2021 Extly, CB. All rights reserved.
@@ -12,12 +12,8 @@
 
 namespace Extly\Infrastructure\Support\HtmlAsset\Asset;
 
-use Extly\Infrastructure\Creator\CreatorTrait;
-
 final class InlineScriptTag extends HtmlAssetTagAbstract implements HtmlAssetTagInterface
 {
-    use CreatorTrait;
-
     public function __construct(string $innerHtml, array $attributes = [])
     {
         parent::__construct('script', $innerHtml, $attributes);

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * @package     Extly Infrastructure Support
+ * @package     Extly HTML Asset Tags Builder
  *
  * @author      Extly, CB. <team@extly.com>
  * @copyright   Copyright (c)2012-2021 Extly, CB. All rights reserved.
@@ -12,13 +12,10 @@
 
 namespace Extly\Infrastructure\Support\HtmlAsset\Asset;
 
-use Extly\Infrastructure\Creator\CreatorTrait;
 use Extly\Infrastructure\Support\HtmlAsset\Repository;
 
 final class LinkDeferStylesheetTag extends HtmlAssetTagAbstract implements HtmlAssetTagInterface
 {
-    use CreatorTrait;
-
     public function __construct(string $href, array $attributes = [])
     {
         // Similar to LinkStylesheetTag
@@ -27,7 +24,7 @@ final class LinkDeferStylesheetTag extends HtmlAssetTagAbstract implements HtmlA
         ];
 
         $script = LinkStylesheetByScript::renderScript($href);
-        $noScriptTag = LinkCriticalStylesheetTag::create($href);
+        $noScriptTag = new LinkCriticalStylesheetTag($href);
 
         parent::__construct('script', $script, array_merge($defaultAttributes, $attributes), $noScriptTag);
     }

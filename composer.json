@@ -1,8 +1,7 @@
 {
   "name": "anibalsanchez/extly-html-asset-tags-builder",
-  "version": "1.8.0",
-  "description":
-    "Beyond the JDocument, the Asset Tags Builder manages the generation of script and style tags for an Html Document.",
+  "version": "2.0.0",
+  "description": "The Asset Tags Builder manages the generation of script and style tags for an Html Document.",
   "authors": [
     {
       "name": "Andrea Gentil & Anibal Sanchez, Extly CB",
@@ -10,9 +9,6 @@
     }
   ],
   "autoload": {
-    "files": [
-      "src/ClassAliasMap.php"
-    ],
     "psr-4": {
       "Extly\\": "src/"
     }
@@ -23,21 +19,11 @@
     }
   },
   "require": {
-    "php": ">=5.6.0",
-
-    "studiow/html": "^1.0",
-    "illuminate/support": "^5.4|^6.0",
-    "anibalsanchez/create-pattern": "^2.0"
+    "php": "^7.3|^8.0",
+    "illuminate/collections": "^8.83"
   },
   "license": "MIT",
   "require-dev": {
-    "phpunit/phpunit": "^7.4"
-  },
-  "extra": {
-    "php-prefixer": {
-      "projectName": "PHP-PREFIXER",
-      "prefixForNamespaces": "DIV_BUILD",
-      "prefixForGlobalObjects": "DIV_"
-    }
+    "phpunit/phpunit": "^9.5"
   }
 }

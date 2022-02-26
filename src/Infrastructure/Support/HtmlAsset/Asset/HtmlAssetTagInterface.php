@@ -1,7 +1,7 @@
 <?php
 
 /*
- * @package     Extly Infrastructure Support
+ * @package     Extly HTML Asset Tags Builder
  *
  * @author      Extly, CB. <team@extly.com>
  * @copyright   Copyright (c)2012-2021 Extly, CB. All rights reserved.

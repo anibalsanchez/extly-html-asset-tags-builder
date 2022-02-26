@@ -1,7 +1,7 @@
 <?php
 
 /*
- * @package     Extly Infrastructure Support
+ * @package     Extly HTML Asset Tags Builder
  *
  * @author      Extly, CB. <team@extly.com>
  * @copyright   Copyright (c)2012-2021 Extly, CB. All rights reserved.
@@ -23,10 +23,10 @@ class LinkStylesheetByMediaPrintTest extends TestCase
 {
     public function testBuildTag()
     {
-        $linkDeferStylesheetTag = LinkStylesheetByMediaPrint::create(
+        $linkDeferStylesheetTag = new LinkStylesheetByMediaPrint(
             'https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css'
         );
-        $htmlAssetBuilder = HtmlAssetTagsBuilder::create();
+        $htmlAssetBuilder = new HtmlAssetTagsBuilder();
         $tag = $htmlAssetBuilder->buildTag($linkDeferStylesheetTag);
 
         $this->assertSame(
