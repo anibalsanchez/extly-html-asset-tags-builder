@@ -23,7 +23,7 @@ final class HtmlAssetTagsBuilder
     public function __construct(Repository $repository = null)
     {
         if (!$repository) {
-            $this->repository = new Repository();
+            $this->repository = Repository::getInstance();
 
             return;
         }
