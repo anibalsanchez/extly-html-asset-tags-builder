@@ -14,7 +14,6 @@
     "illuminate/collections": "^8.3.4 || ^9.1.5"
   },
   "require-dev": {
-    "phan/phan": "5.x",
     "phpunit/phpunit": "^9.5"
   },
   "autoload": {
