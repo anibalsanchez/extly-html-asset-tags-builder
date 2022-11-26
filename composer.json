@@ -11,7 +11,7 @@
   ],
   "require": {
     "php": "^7.3 || ^8.0",
-    "illuminate/collections": "^8.3 || ^9.1"
+    "illuminate/collections": "^8.3.4 || ^9.1.5"
   },
   "require-dev": {
     "phan/phan": "5.x",
