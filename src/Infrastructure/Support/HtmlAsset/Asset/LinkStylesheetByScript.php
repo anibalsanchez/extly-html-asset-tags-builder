@@ -1,11 +1,11 @@
 <?php
 
 /*
- * @package     Extly HTML Asset Tags Builder
+ * @package     Extly Infrastructure Support
  *
  * @author      Extly, CB. <team@extly.com>
- * @copyright   Copyright (c)2012-2021 Extly, CB. All rights reserved.
- * @license     http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @copyright   Copyright (c)2012-2022 Extly, CB. All rights reserved.
+ * @license     https://www.opensource.org/licenses/mit-license.html  MIT License
  *
  * @see         https://www.extly.com
  */

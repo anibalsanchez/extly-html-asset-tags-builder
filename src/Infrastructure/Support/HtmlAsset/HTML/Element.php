@@ -1,11 +1,11 @@
 <?php
 
 /*
- * @package     Extly HTML Asset Tags Builder
+ * @package     Extly Infrastructure Support
  *
  * @author      Extly, CB. <team@extly.com>
- * @copyright   Copyright (c)2012-2021 Extly, CB. All rights reserved.
- * @license     http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @copyright   Copyright (c)2012-2022 Extly, CB. All rights reserved.
+ * @license     https://www.opensource.org/licenses/mit-license.html  MIT License
  *
  * @see         https://www.extly.com
  */
@@ -22,7 +22,9 @@ class Element
      * @var string
      */
     private $tagname;
+
     private $innerHTML;
+
     private static $voidElements = [
         'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'keygen',
         'link', 'meta', 'param', 'source', 'track', 'wbr',
@@ -40,6 +42,20 @@ class Element
         $this->setTagName($tagname);
         $this->setInnerHTML($innerHTML);
         $this->setAttributes($attributes instanceof Attributes ? $attributes : new Attributes((array) $attributes));
+    }
+
+    /**
+     * Convert element to HTML.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        if ($this->isVoidElement()) {
+            return $this->getOpenTag();
+        }
+
+        return $this->getOpenTag().$this->getInnerHTML().$this->getCloseTag();
     }
 
     /**
@@ -98,20 +114,6 @@ class Element
     public function isVoidElement()
     {
         return \in_array($this->getTagName(), self::$voidElements);
-    }
-
-    /**
-     * Convert element to HTML.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        if ($this->isVoidElement()) {
-            return $this->getOpenTag();
-        }
-
-        return $this->getOpenTag().$this->getInnerHTML().$this->getCloseTag();
     }
 
     /**
