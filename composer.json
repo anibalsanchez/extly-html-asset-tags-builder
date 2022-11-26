@@ -1,13 +1,22 @@
 {
   "name": "anibalsanchez/extly-html-asset-tags-builder",
-  "version": "2.0.0",
   "description": "The Asset Tags Builder manages the generation of script and style tags for an Html Document.",
+  "license": "MIT",
+  "version": "2.0.0",
   "authors": [
     {
       "name": "Andrea Gentil & Anibal Sanchez, Extly CB",
       "email": "team@extly.com"
     }
   ],
+  "require": {
+    "php": "^7.3 || ^8.0",
+    "illuminate/collections": "^8.0 || ^9.0"
+  },
+  "require-dev": {
+    "phan/phan": "5.x",
+    "phpunit/phpunit": "^9.5"
+  },
   "autoload": {
     "psr-4": {
       "Extly\\": "src/"
@@ -17,14 +26,5 @@
     "psr-4": {
       "Tests\\": "tests/"
     }
-  },
-  "require": {
-    "php": "^7.3|^8.0",
-    "illuminate/collections": "^8.0|^9.0"
-  },
-  "license": "MIT",
-  "require-dev": {
-    "phpunit/phpunit": "^9.5",
-    "phan/phan": "5.x"
   }
 }
