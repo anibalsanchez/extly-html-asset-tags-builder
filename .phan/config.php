@@ -1,9 +1,18 @@
 <?php
 
-// https://github.com/phan/phan/wiki/Getting-Started
+/*
+ * @package     Extly Infrastructure Support
+ *
+ * @author      Extly, CB. <team@extly.com>
+ * @copyright   Copyright (c)2012-2022 Extly, CB. All rights reserved.
+ * @license     https://www.opensource.org/licenses/mit-license.html  MIT License
+ *
+ * @see         https://www.extly.com
+ */
+
 // https://github.com/phan/phan/wiki/Incrementally-Strengthening-Analysis
 
-/**
+/*
  * This configuration will be read and overlaid on top of the
  * default configuration. Command line arguments will be applied
  * after this file is read.
@@ -25,6 +34,11 @@ return [
     'directory_list' => [
         'src',
         'tests',
+        'vendor',
+    ],
+
+    'exclude_analysis_directory_list' => [
+        'vendor',
     ],
 
     // Backwards Compatibility Checking. This is slow
@@ -32,7 +46,7 @@ return [
     // it before upgrading your version of PHP to a
     // new version that has backward compatibility
     // breaks. (Also see target_php_version)
-    'backward_compatibility_checks' => false,
+    'backward_compatibility_checks' => true,
 
     // If true, this run a quick version of checks that takes less
     // time at the cost of not running as thorough
