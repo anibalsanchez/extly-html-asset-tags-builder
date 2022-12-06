@@ -4,30 +4,28 @@
  * @package     Extly Infrastructure Support
  *
  * @author      Extly, CB. <team@extly.com>
- * @copyright   Copyright (c)2012-2021 Extly, CB. All rights reserved.
- * @license     http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @copyright   Copyright (c)2012-2022 Extly, CB. All rights reserved.
+ * @license     https://www.opensource.org/licenses/mit-license.html  MIT License
  *
  * @see         https://www.extly.com
  */
 
 namespace Extly\Infrastructure\Support\HtmlAsset;
 
-use Extly\Infrastructure\Creator\CreatorTrait;
 use Extly\Infrastructure\Support\HtmlAsset\Asset\HtmlAssetTagInterface;
+use Extly\Infrastructure\Support\HtmlAsset\HTML\Element;
 use Illuminate\Support\Collection;
-use Studiow\HTML\Element;
 
 final class HtmlAssetTagsBuilder
 {
-    use CreatorTrait;
-
     private $repository;
 
     public function __construct(Repository $repository = null)
     {
         if (!$repository) {
-            // No Container, so let's singleton it
-            $repository = Repository::getInstance();
+            $this->repository = Repository::getInstance();
+
+            return;
         }
 
         $this->repository = $repository;
@@ -53,7 +51,7 @@ final class HtmlAssetTagsBuilder
         return $renderedAssetTags.$renderedNoScriptContentTags;
     }
 
-    public function buildTag(HtmlAssetTagInterface $assetTag)
+    public function buildTag(HtmlAssetTagInterface $assetTag): string
     {
         return (string) (new Element(
             $assetTag->getTag(),
@@ -65,7 +63,7 @@ final class HtmlAssetTagsBuilder
         ));
     }
 
-    public function buildNoScriptTag(HtmlAssetTagInterface $noScriptContentTag)
+    public function buildNoScriptTag(HtmlAssetTagInterface $noScriptContentTag): string
     {
         $renderedNoScriptContentTag = $this->buildTag($noScriptContentTag);
 
@@ -75,25 +73,21 @@ final class HtmlAssetTagsBuilder
         ));
     }
 
-    private function build($assetTags)
+    private function build(Collection $assetTags): string
     {
-        $buffer = [];
+        $buffer = $assetTags->map(function (HtmlAssetTagInterface $assetTag) {
+            return $this->buildTag($assetTag);
+        });
 
-        foreach ($assetTags as $assetTag) {
-            $buffer[] = $this->buildTag($assetTag);
-        }
-
-        return implode('', $buffer);
+        return implode('', $buffer->toArray());
     }
 
-    private function buildNoScriptTags($assetTags)
+    private function buildNoScriptTags(Collection $assetTags)
     {
-        $buffer = [];
+        $buffer = $assetTags->map(function (HtmlAssetTagInterface $assetTag) {
+            return $this->buildNoScriptTag($assetTag);
+        });
 
-        foreach ($assetTags as $assetTag) {
-            $buffer[] = $this->buildNoScriptTag($assetTag);
-        }
-
-        return implode('', $buffer);
+        return implode('', $buffer->toArray());
     }
 }

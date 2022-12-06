@@ -4,8 +4,8 @@
  * @package     Extly Infrastructure Support
  *
  * @author      Extly, CB. <team@extly.com>
- * @copyright   Copyright (c)2012-2021 Extly, CB. All rights reserved.
- * @license     http://www.opensource.org/licenses/mit-license.html  MIT License
+ * @copyright   Copyright (c)2012-2022 Extly, CB. All rights reserved.
+ * @license     https://www.opensource.org/licenses/mit-license.html  MIT License
  *
  * @see         https://www.extly.com
  */
@@ -23,10 +23,10 @@ class LinkDeferStylesheetTagTest extends TestCase
 {
     public function testBuildTag()
     {
-        $linkDeferStylesheetTag = LinkDeferStylesheetTag::create(
+        $linkDeferStylesheetTag = new LinkDeferStylesheetTag(
             'https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css'
         );
-        $htmlAssetBuilder = HtmlAssetTagsBuilder::create();
+        $htmlAssetBuilder = new HtmlAssetTagsBuilder();
         $tag = $htmlAssetBuilder->buildTag($linkDeferStylesheetTag);
 
         $this->assertSame(

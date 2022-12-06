@@ -26,7 +26,6 @@ The tags builder has the following predefined ways to include these scripts and 
 - InlineScriptTag
 - InlineStyleTag
 - LinkCriticalStylesheetTag
-- LinkPreloadStylesheetTag
 - LinkDeferStylesheetTag
 - ScriptTag
 
@@ -43,22 +42,22 @@ use Extly\Infrastructure\Support\HtmlAsset\Asset\ScriptTag;
 // Add template js
 $templateJsFile = CMSHTMLHelper::script('template.js', ['relative' => true, 'pathOnly' => true]);
 $templateJsFile = $templateJsFile.'?'.(new JVersion)->getMediaVersion();
-$htmlAssetRepository->push(ScriptTag::create($templateJsFile));
+$htmlAssetRepository->push(new ScriptTag($templateJsFile));
 
 // Add Stylesheets
 $templateCssFile = CMSHTMLHelper::stylesheet('template.css', ['relative' => true, 'pathOnly' => true]);
 $templateCssFile = $templateCssFile.'?'.(new JVersion)->getMediaVersion();
-$htmlAssetRepository->push(LinkCriticalStylesheetTag::create($templateCssFile));
+$htmlAssetRepository->push(new LinkCriticalStylesheetTag($templateCssFile));
 
 // Additional inline head scripts
 $headScripts = $this->params->get('headScripts');
 
 if (!empty($headScripts)) {
-    $htmlAssetRepository->push(InlineScriptTag::create($headScripts));
+    $htmlAssetRepository->push(new InlineScriptTag($headScripts));
 }
 
 // FontAwesome at the end of the body
-$linkStylesheetTag = LinkDeferStylesheetTag::create('https://use.fontawesome.com/releases/v5.6.3/css/all.css');
+$linkStylesheetTag = new LinkDeferStylesheetTag('https://use.fontawesome.com/releases/v5.6.3/css/all.css');
 $htmlAssetRepository->push($linkStylesheetTag);
 ```
 
@@ -113,7 +112,7 @@ class XTHtmlAssetsRenderer extends HeadRenderer
         $document->_script = [];
 
         // My Script and Styles
-        $headScript = HtmlAssetTagsBuilder::create()->generate(Repository::GLOBAL_POSITION_HEAD);
+        $headScript = new HtmlAssetTagsBuilder()->generate(Repository::GLOBAL_POSITION_HEAD);
 
         return parent::render($head, $params, $content).$headScript;
     }
@@ -146,7 +145,7 @@ class XTHtmlAssetsBodyRenderer extends HeadRenderer
      */
     public function render($head, $params = [], $content = null)
     {
-        return HtmlAssetTagsBuilder::create()->generate(Repository::GLOBAL_POSITION_BODY);
+        return new HtmlAssetTagsBuilder()->generate(Repository::GLOBAL_POSITION_BODY);
     }
 }
 ```
