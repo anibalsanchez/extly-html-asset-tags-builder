@@ -26,11 +26,9 @@
       "Tests\\": "tests/"
     }
   },
-  "extra": {
-    "config": {
-      "platform": {
-        "php": "8.0.25"
-      }
+  "config": {
+    "platform": {
+      "php": "8.0.25"
     }
   }
 }
