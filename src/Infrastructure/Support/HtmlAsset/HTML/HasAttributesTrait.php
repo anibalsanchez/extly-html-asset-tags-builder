@@ -115,6 +115,6 @@ trait HasAttributesTrait
      */
     public function getAttribute($name)
     {
-        return \array_key_exists($name, $this->getAttributes()) ? $this->getAttributes()[$name] : null;
+        return $this->getAttributes()[$name] ?? null;
     }
 }

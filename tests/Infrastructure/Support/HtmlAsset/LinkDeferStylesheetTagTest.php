@@ -26,8 +26,8 @@ class LinkDeferStylesheetTagTest extends TestCase
         $linkDeferStylesheetTag = new LinkDeferStylesheetTag(
             'https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css'
         );
-        $htmlAssetBuilder = new HtmlAssetTagsBuilder();
-        $tag = $htmlAssetBuilder->buildTag($linkDeferStylesheetTag);
+        $htmlAssetTagsBuilder = new HtmlAssetTagsBuilder();
+        $tag = $htmlAssetTagsBuilder->buildTag($linkDeferStylesheetTag);
 
         $this->assertSame(
             '<script>!function(e){var t=document.createElement("link");t.rel="stylesheet",t.href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css",t.type="text/css";var n=document.getElementsByTagName("link")[0];n.parentNode.insertBefore(t,n)}();</script>',

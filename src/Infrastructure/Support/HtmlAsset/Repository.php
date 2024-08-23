@@ -45,9 +45,9 @@ final class Repository
         return self::$repositoryInstance;
     }
 
-    public function push(HtmlAssetTagInterface $htmlAsset)
+    public function push(HtmlAssetTagInterface $htmlAssetTag)
     {
-        $this->assetTagCollection->push($htmlAsset);
+        $this->assetTagCollection->push($htmlAssetTag);
 
         return $this;
     }
@@ -55,18 +55,12 @@ final class Repository
     public function getAssetTagsByPosition($positionName)
     {
         return $this->assetTagCollection
-            ->filter(function (HtmlAssetTagInterface $item) use ($positionName) {
-                return $item->getPosition() === $positionName;
-            })
-            ->sortBy(function (HtmlAssetTagInterface $item) {
-                return $item->getPriority();
-            });
+            ->filter(fn(HtmlAssetTagInterface $htmlAssetTag) => $htmlAssetTag->getPosition() === $positionName)
+            ->sortBy(fn(HtmlAssetTagInterface $htmlAssetTag) => $htmlAssetTag->getPriority());
     }
 
     public function getNoScriptContentTags()
     {
-        return $this->assetTagCollection->map(function (HtmlAssetTagInterface $item) {
-            return $item->getNoScriptContentTag();
-        })->filter();
+        return $this->assetTagCollection->map(fn(HtmlAssetTagInterface $htmlAssetTag) => $htmlAssetTag->getNoScriptContentTag())->filter();
     }
 }

@@ -38,24 +38,24 @@ class HtmlAssetTagsBuilderTest extends TestCase
 
         $repository = (new Repository())->push($inlineScriptTag);
 
-        $htmlAssetBuilder = new HtmlAssetTagsBuilder($repository);
-        $script = $htmlAssetBuilder->generate(Repository::GLOBAL_POSITION_HEAD);
+        $htmlAssetTagsBuilder = new HtmlAssetTagsBuilder($repository);
+        $script = $htmlAssetTagsBuilder->generate(Repository::GLOBAL_POSITION_HEAD);
         $this->assertSame('<script>console.log("A Test");</script>', $script);
     }
 
     public function testInlineStyleTag()
     {
-        $inlineStyle = new InlineStyleTag(
+        $inlineStyleTag = new InlineStyleTag(
             'body {color: #fff}',
             [
                 'position' => Repository::GLOBAL_POSITION_HEAD,
             ]
         );
 
-        $repository = (new Repository())->push($inlineStyle);
+        $repository = (new Repository())->push($inlineStyleTag);
 
-        $htmlAssetBuilder = new HtmlAssetTagsBuilder($repository);
-        $script = $htmlAssetBuilder->generate(Repository::GLOBAL_POSITION_HEAD);
+        $htmlAssetTagsBuilder = new HtmlAssetTagsBuilder($repository);
+        $script = $htmlAssetTagsBuilder->generate(Repository::GLOBAL_POSITION_HEAD);
         $this->assertSame('<style>body {color: #fff}</style>', $script);
     }
 
@@ -68,7 +68,7 @@ class HtmlAssetTagsBuilderTest extends TestCase
                 'priority' => 100,
             ]
         );
-        $inlineStyle = new InlineStyleTag(
+        $inlineStyleTag = new InlineStyleTag(
             'body {color: #fff}',
             [
                 'position' => Repository::GLOBAL_POSITION_HEAD,
@@ -78,10 +78,10 @@ class HtmlAssetTagsBuilderTest extends TestCase
 
         $repository = (new Repository())
             ->push($inlineScriptTag)
-            ->push($inlineStyle);
+            ->push($inlineStyleTag);
 
-        $htmlAssetBuilder = new HtmlAssetTagsBuilder($repository);
-        $script = $htmlAssetBuilder->generate(Repository::GLOBAL_POSITION_HEAD);
+        $htmlAssetTagsBuilder = new HtmlAssetTagsBuilder($repository);
+        $script = $htmlAssetTagsBuilder->generate(Repository::GLOBAL_POSITION_HEAD);
         $this->assertSame('<style>body {color: #fff}</style><script>console.log("A Test");</script>', $script);
     }
 
@@ -97,24 +97,24 @@ class HtmlAssetTagsBuilderTest extends TestCase
 
         $repository = (new Repository())->push($remoteScriptTag);
 
-        $htmlAssetBuilder = new HtmlAssetTagsBuilder($repository);
-        $script = $htmlAssetBuilder->generate(Repository::GLOBAL_POSITION_HEAD);
+        $htmlAssetTagsBuilder = new HtmlAssetTagsBuilder($repository);
+        $script = $htmlAssetTagsBuilder->generate(Repository::GLOBAL_POSITION_HEAD);
         $this->assertSame('<script defer async src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.4/redux.min.js"></script>', $script);
     }
 
     public function testLinkDeferStylesheetTag()
     {
-        $stylesheet = new LinkDeferStylesheetTag(
+        $linkDeferStylesheetTag = new LinkDeferStylesheetTag(
             'https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css',
             [
                 'position' => Repository::GLOBAL_POSITION_HEAD,
             ]
         );
 
-        $repository = (new Repository())->push($stylesheet);
+        $repository = (new Repository())->push($linkDeferStylesheetTag);
 
-        $htmlAssetBuilder = new HtmlAssetTagsBuilder($repository);
-        $script = $htmlAssetBuilder->generate(Repository::GLOBAL_POSITION_HEAD);
+        $htmlAssetTagsBuilder = new HtmlAssetTagsBuilder($repository);
+        $script = $htmlAssetTagsBuilder->generate(Repository::GLOBAL_POSITION_HEAD);
         $this->assertSame(
             '<script>!function(e){var t=document.createElement("link");t.rel="stylesheet",t.href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css",t.type="text/css";var n=document.getElementsByTagName("link")[0];n.parentNode.insertBefore(t,n)}();</script><noscript><link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css"></noscript>',
             $script
@@ -123,30 +123,30 @@ class HtmlAssetTagsBuilderTest extends TestCase
 
     public function testLinkCriticalStylesheetTag()
     {
-        $stylesheet = new LinkCriticalStylesheetTag(
+        $linkCriticalStylesheetTag = new LinkCriticalStylesheetTag(
             'https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css'
         );
 
-        $repository = (new Repository())->push($stylesheet);
+        $repository = (new Repository())->push($linkCriticalStylesheetTag);
 
-        $htmlAssetBuilder = new HtmlAssetTagsBuilder($repository);
-        $script = $htmlAssetBuilder->generate(Repository::GLOBAL_POSITION_HEAD);
+        $htmlAssetTagsBuilder = new HtmlAssetTagsBuilder($repository);
+        $script = $htmlAssetTagsBuilder->generate(Repository::GLOBAL_POSITION_HEAD);
         $this->assertSame('<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css">', $script);
     }
 
     public function testLinkStylesheetByScript()
     {
-        $stylesheet = new LinkStylesheetByScript(
+        $linkStylesheetByScript = new LinkStylesheetByScript(
             'https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css'
         );
 
-        $repository = (new Repository())->push($stylesheet);
+        $repository = (new Repository())->push($linkStylesheetByScript);
 
-        $htmlAssetBuilder = new HtmlAssetTagsBuilder($repository);
-        $script = $htmlAssetBuilder->generate(Repository::GLOBAL_POSITION_HEAD);
+        $htmlAssetTagsBuilder = new HtmlAssetTagsBuilder($repository);
+        $script = $htmlAssetTagsBuilder->generate(Repository::GLOBAL_POSITION_HEAD);
         $this->assertSame('<noscript><link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css"></noscript>', $script);
 
-        $script = $htmlAssetBuilder->generate(Repository::GLOBAL_POSITION_BODY);
+        $script = $htmlAssetTagsBuilder->generate(Repository::GLOBAL_POSITION_BODY);
         $this->assertSame('<script>!function(e){var t=document.createElement("link");t.rel="stylesheet",t.href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css",t.type="text/css";var n=document.getElementsByTagName("link")[0];n.parentNode.insertBefore(t,n)}();</script>', $script);
     }
 
@@ -161,7 +161,7 @@ class HtmlAssetTagsBuilderTest extends TestCase
                 'defer' => false,
             ]
         );
-        $stylesheet = new LinkDeferStylesheetTag(
+        $linkDeferStylesheetTag = new LinkDeferStylesheetTag(
             'https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css',
             [
                 'position' => Repository::GLOBAL_POSITION_HEAD,
@@ -191,13 +191,13 @@ class HtmlAssetTagsBuilderTest extends TestCase
 
         $repository = (new Repository())
             ->push($remoteScriptTag)
-            ->push($stylesheet)
+            ->push($linkDeferStylesheetTag)
             ->push($inlineScriptTag)
             ->push($inlineStyle1)
             ->push($inlineStyle2);
 
-        $htmlAssetBuilder = new HtmlAssetTagsBuilder($repository);
-        $script = $htmlAssetBuilder->generate(Repository::GLOBAL_POSITION_HEAD);
+        $htmlAssetTagsBuilder = new HtmlAssetTagsBuilder($repository);
+        $script = $htmlAssetTagsBuilder->generate(Repository::GLOBAL_POSITION_HEAD);
         $this->assertSame(
             '<style>body {color: #fff}</style><script>console.log("A Test");</script><script>!function(e){var t=document.createElement("link");t.rel="stylesheet",t.href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css",t.type="text/css";var n=document.getElementsByTagName("link")[0];n.parentNode.insertBefore(t,n)}();</script><script async src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.4/redux.min.js"></script><style>p {color: #f00}</style><noscript><link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css"></noscript>',
             $script

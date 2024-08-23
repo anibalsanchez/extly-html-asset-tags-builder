@@ -23,9 +23,9 @@ final class LinkStylesheetByMediaPrint extends HtmlAssetTagAbstract implements H
     public function __construct(string $href, array $attributes = [])
     {
         $attributes['href'] = $href;
-        $noScriptTag = new LinkCriticalStylesheetTag($href);
+        $linkCriticalStylesheetTag = new LinkCriticalStylesheetTag($href);
 
         // <link rel="stylesheet" href="/path/to/my.css" media="print" onload="this.media='all'; this.onload=null;">
-        parent::__construct('link', '', array_merge(self::DEFAULT_ATTRIBUTES, $attributes), $noScriptTag);
+        parent::__construct('link', '', array_merge(self::DEFAULT_ATTRIBUTES, $attributes), $linkCriticalStylesheetTag);
     }
 }

@@ -23,11 +23,11 @@ class LinkStylesheetByPreloadAsStyleTest extends TestCase
 {
     public function testBuildTag()
     {
-        $linkDeferStylesheetTag = new LinkStylesheetByPreloadAsStyle(
+        $linkStylesheetByPreloadAsStyle = new LinkStylesheetByPreloadAsStyle(
             'https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css'
         );
-        $htmlAssetBuilder = new HtmlAssetTagsBuilder();
-        $tag = $htmlAssetBuilder->buildTag($linkDeferStylesheetTag);
+        $htmlAssetTagsBuilder = new HtmlAssetTagsBuilder();
+        $tag = $htmlAssetTagsBuilder->buildTag($linkStylesheetByPreloadAsStyle);
 
         $this->assertSame(
             '<link rel="preload" as="style" onload="this.onload=null;this.rel = &quot;stylesheet&quot;" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.0.6/tailwind.min.css">',

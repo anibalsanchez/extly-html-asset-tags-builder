@@ -10,17 +10,17 @@
  * @see         https://www.extly.com
  */
 
-if (class_exists('Extly\Infrastructure\Support\HtmlAsset\Asset\LinkDeferStylesheetTag')) {
+if (class_exists(\Extly\Infrastructure\Support\HtmlAsset\Asset\LinkDeferStylesheetTag::class)) {
     @class_alias(
         Extly\Infrastructure\Support\HtmlAsset\Asset\LinkDeferStylesheetTag::class,
-        'Extly\Infrastructure\Support\HtmlAsset\Asset\LinkPreloadStylesheetTag'
+        \Extly\Infrastructure\Support\HtmlAsset\Asset\LinkPreloadStylesheetTag::class
     );
 }
 
-if (class_exists('Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetByScript')) {
+if (class_exists(\Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetByScript::class)) {
     @class_alias(
         Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetByScript::class,
-        'Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetByScriptTag'
+        \Extly\Infrastructure\Support\HtmlAsset\Asset\LinkStylesheetByScriptTag::class
     );
 }
 

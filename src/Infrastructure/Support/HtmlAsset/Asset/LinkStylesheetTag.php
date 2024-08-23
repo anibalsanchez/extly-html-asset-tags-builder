@@ -27,8 +27,8 @@ final class LinkStylesheetTag extends HtmlAssetTagAbstract implements HtmlAssetT
         ];
 
         $script = LinkStylesheetByScript::renderScript($href);
-        $noScriptTag = new LinkCriticalStylesheetTag($href);
+        $linkCriticalStylesheetTag = new LinkCriticalStylesheetTag($href);
 
-        parent::__construct('script', $script, array_merge($defaultAttributes, $attributes), $noScriptTag);
+        parent::__construct('script', $script, array_merge($defaultAttributes, $attributes), $linkCriticalStylesheetTag);
     }
 }

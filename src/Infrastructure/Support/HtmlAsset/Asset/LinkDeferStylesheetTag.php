@@ -24,8 +24,8 @@ final class LinkDeferStylesheetTag extends HtmlAssetTagAbstract implements HtmlA
         ];
 
         $script = LinkStylesheetByScript::renderScript($href);
-        $noScriptTag = new LinkCriticalStylesheetTag($href);
+        $linkCriticalStylesheetTag = new LinkCriticalStylesheetTag($href);
 
-        parent::__construct('script', $script, array_merge($defaultAttributes, $attributes), $noScriptTag);
+        parent::__construct('script', $script, array_merge($defaultAttributes, $attributes), $linkCriticalStylesheetTag);
     }
 }

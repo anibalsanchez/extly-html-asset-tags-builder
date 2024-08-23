@@ -123,9 +123,9 @@ class Element
      */
     private function getOpenTag()
     {
-        $content = trim("{$this->tagname} ".(string) $this->attributes);
+        $content = trim($this->tagname . ' '.(string) $this->attributes);
 
-        return "<{$content}>";
+        return sprintf('<%s>', $content);
     }
 
     /**
@@ -135,6 +135,6 @@ class Element
      */
     private function getCloseTag()
     {
-        return "</{$this->tagname}>";
+        return sprintf('</%s>', $this->tagname);
     }
 }
