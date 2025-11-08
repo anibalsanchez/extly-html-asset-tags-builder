@@ -4,7 +4,7 @@
  * @package     Extly Infrastructure Support
  *
  * @author      Extly, CB. <team@extly.com>
- * @copyright   Copyright (c)2012-2024 Extly, CB. All rights reserved.
+ * @copyright   Copyright (c)2012-2025 Extly, CB. All rights reserved.
  * @license     https://www.opensource.org/licenses/mit-license.html  MIT License
  *
  * @see         https://www.extly.com
@@ -20,9 +20,9 @@ final class HtmlAssetTagsBuilder
 {
     private $repository;
 
-    public function __construct(Repository $htmlAssetRepository = null)
+    public function __construct(?Repository $htmlAssetRepository = null)
     {
-        if (!$htmlAssetRepository instanceof \Extly\Infrastructure\Support\HtmlAsset\Repository) {
+        if (!$htmlAssetRepository instanceof Repository) {
             $this->repository = Repository::getInstance();
 
             return;
@@ -75,14 +75,14 @@ final class HtmlAssetTagsBuilder
 
     private function build(Collection $assetTags): string
     {
-        $buffer = $assetTags->map(fn(HtmlAssetTagInterface $htmlAssetTag) => $this->buildTag($htmlAssetTag));
+        $buffer = $assetTags->map(fn (HtmlAssetTagInterface $htmlAssetTag) => $this->buildTag($htmlAssetTag));
 
         return implode('', $buffer->toArray());
     }
 
     private function buildNoScriptTags(Collection $assetTags)
     {
-        $buffer = $assetTags->map(fn(HtmlAssetTagInterface $htmlAssetTag) => $this->buildNoScriptTag($htmlAssetTag));
+        $buffer = $assetTags->map(fn (HtmlAssetTagInterface $htmlAssetTag) => $this->buildNoScriptTag($htmlAssetTag));
 
         return implode('', $buffer->toArray());
     }

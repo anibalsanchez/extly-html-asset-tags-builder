@@ -4,7 +4,7 @@
  * @package     Extly Infrastructure Support
  *
  * @author      Extly, CB. <team@extly.com>
- * @copyright   Copyright (c)2012-2024 Extly, CB. All rights reserved.
+ * @copyright   Copyright (c)2012-2025 Extly, CB. All rights reserved.
  * @license     https://www.opensource.org/licenses/mit-license.html  MIT License
  *
  * @see         https://www.extly.com
@@ -56,7 +56,7 @@ class Attributes extends \ArrayObject
      *
      * @param string $classname
      *
-     * @return \Extly\Infrastructure\Support\HtmlAsset\HTML\Attributes
+     * @return Attributes
      */
     public function addClass($classname)
     {
@@ -71,7 +71,7 @@ class Attributes extends \ArrayObject
      *
      * @param string $classname
      *
-     * @return \Extly\Infrastructure\Support\HtmlAsset\HTML\Attributes
+     * @return Attributes
      */
     public function removeClass($classname)
     {
@@ -97,7 +97,7 @@ class Attributes extends \ArrayObject
     /**
      * Set classes by array.
      *
-     * @return \Extly\Infrastructure\Support\HtmlAsset\HTML\Attributes
+     * @return Attributes
      */
     private function setClassArray(array $classArr)
     {

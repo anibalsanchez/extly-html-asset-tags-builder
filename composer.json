@@ -17,9 +17,6 @@
     "phpunit/phpunit": "^8.5.31"
   },
   "autoload": {
-    "files": [
-      "src/ClassAliasMap.php"
-    ],
     "psr-4": {
       "Extly\\": "src/"
     }

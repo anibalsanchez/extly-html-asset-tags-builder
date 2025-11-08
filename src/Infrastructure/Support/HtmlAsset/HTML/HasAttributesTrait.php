@@ -4,7 +4,7 @@
  * @package     Extly Infrastructure Support
  *
  * @author      Extly, CB. <team@extly.com>
- * @copyright   Copyright (c)2012-2024 Extly, CB. All rights reserved.
+ * @copyright   Copyright (c)2012-2025 Extly, CB. All rights reserved.
  * @license     https://www.opensource.org/licenses/mit-license.html  MIT License
  *
  * @see         https://www.extly.com
@@ -19,7 +19,7 @@ trait HasAttributesTrait
     /**
      * Set the attributes container.
      *
-     * @var \Extly\Infrastructure\Support\HtmlAsset\HTML\Attributes
+     * @var Attributes
      */
     protected $attributes;
 
@@ -33,7 +33,7 @@ trait HasAttributesTrait
     /**
      * Get the attributes container.
      *
-     * @return \Extly\Infrastructure\Support\HtmlAsset\HTML\Attributes
+     * @return Attributes
      */
     public function getAttributes()
     {
@@ -45,7 +45,7 @@ trait HasAttributesTrait
      *
      * @param string $classname
      *
-     * @return \Extly\Infrastructure\Support\HtmlAsset\HTML\Element
+     * @return Element
      */
     public function addClass($classname)
     {
@@ -59,7 +59,7 @@ trait HasAttributesTrait
      *
      * @param string $classname
      *
-     * @return \Extly\Infrastructure\Support\HtmlAsset\HTML\Element
+     * @return Element
      */
     public function removeClass($classname)
     {
@@ -85,7 +85,7 @@ trait HasAttributesTrait
      *
      * @param string $name
      *
-     * @return \Extly\Infrastructure\Support\HtmlAsset\HTML\Element
+     * @return Element
      */
     public function setAttribute($name, $value)
     {

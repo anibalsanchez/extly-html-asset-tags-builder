@@ -197,14 +197,7 @@ return (new PhpCsFixer\Config())
     ->setFinder(
         (new PhpCsFixer\Finder())
                     ->in([
-                        __DIR__ . '/component',
-                        __DIR__ . '/file',
-                        __DIR__ . '/library/src',
-                        __DIR__ . '/modules',
-                        __DIR__ . '/modules-pro',
-                        __DIR__ . '/package',
-                        __DIR__ . '/plugins',
-                        __DIR__ . '/plugins-pro',
+                        __DIR__ . '/src',
                         __DIR__ . '/tests',
                     ])
                     ->append([__FILE__])
