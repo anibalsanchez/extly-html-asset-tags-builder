@@ -6,7 +6,7 @@ declare(strict_types=1);
  * @package     Extly Infrastructure Support
  *
  * @author      Extly, CB. <team@extly.com>
- * @copyright   Copyright (c)2012-2024 Extly, CB. All rights reserved.
+ * @copyright   Copyright (c)2012-2025 Extly, CB. All rights reserved.
  * @license     https://www.opensource.org/licenses/mit-license.html  MIT License
  *
  * @see         https://www.extly.com
@@ -197,8 +197,8 @@ return (new PhpCsFixer\Config())
     ->setFinder(
         (new PhpCsFixer\Finder())
                     ->in([
-                        __DIR__ . '/src',
-                        __DIR__ . '/tests',
+                        __DIR__.'/src',
+                        __DIR__.'/tests',
                     ])
                     ->append([__FILE__])
                     ->notPath('#/Fixtures/#')
